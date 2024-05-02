@@ -48,8 +48,10 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'rest_framework',
     'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
+    'djrichtextfield',
+
+    #custome Apps
+    'courses',
 
 ]
 
@@ -168,4 +170,20 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
 
     )
+}
+
+
+#rich text
+DJRICHTEXTFIELD_CONFIG = {
+    "js": ["//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"],
+    "init_template": "djrichtextfield/init/ckeditor.js",
+    "settings": {
+        "toolbar": [
+            ["Format", "Bold", "Italic", "Underline"],
+            ["NumberedList", "BulletedList"],
+            ["Undo", "Redo"],
+            ["Maximize"],
+        ],
+        "format_tags": "p;h1;h2;h3;h4;h5",
+    },
 }
