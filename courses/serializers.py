@@ -1,10 +1,9 @@
 from rest_framework import serializers
-from .models import Course
+from .models import Course , LEVEL
 
 
 class CourseSerializer(serializers.ModelSerializer):
-    level = serializers.ChoiceField(choices=Course.LEVEL)
     class Meta:
         model = Course
-        fields = ['id', 'course_name', 'summery', 'description', 'course_requirements', 'learning_goals', 'image',
+        fields = ['id', 'course_name', 'summery','level', 'description', 'course_requirements', 'learning_goals', 'image',
                   'is_enrolled', 'posted_date', 'updated_date']

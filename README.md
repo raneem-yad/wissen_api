@@ -1,11 +1,12 @@
 # wissen_api
 
+## Courses CRUD table
 
-| HTTP  | URI        | CRUD operation       | view name       |
-| ------|------------|----------------------|-----------------|
-| GET   | /resource  | list all resources   | LIST            |
-| POST  |            | create a resource    |                 |
-| GET   | /resource/id| retrieve a resource by id|  DETAILS   |
-| PUT   |         | Update  a resource by id|                 |
-|DELETE |         | Delete  a resource by id|                 |
+| HTTP  | URI          | CRUD operation       | view name       |
+| ------|--------------|----------------------|-----------------|
+| GET   | /courses     | list all courses   | LIST            |
+| POST  |              | create a courses    |                 |
+| GET   | /courses/:id | retrieve a courses by id|  DETAILS   |
+| PUT   |              | Update  a courses by id|                 |
+|DELETE |              | Delete  a courses by id|                 |
 
