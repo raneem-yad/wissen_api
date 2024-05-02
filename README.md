@@ -42,6 +42,20 @@ It also helped in displaying the relationships between the models and how they i
 between the designed database and the implemented one due to more clarity when implementing the project
 ![database ERD](./readme/wissen.drawio.png)
 
+### Explaining the relationship between Models
+
+#### Course Model and other tables:
+1. **with Category Model:** Each course belongs to one category, and each category can have multiple courses. So, the relationship should be **one-to-many** from Category to Course.
+2. **with Tags Model:** Each course can have multiple tags, and each tag can be associated with multiple courses. Therefore, this relationship should be **many-to-many**.
+3. **with Rate Model:** Each course can have multiple ratings, but each rating belongs to only one course. So, the relationship should be **one-to-many** from Course to Rate.
+4. **with Student Model:** Each course can have multiple students enrolled, and each student can enroll in multiple courses. Therefore, this relationship should be **many-to-many**.
+5. **with Instructor Model:** Each course is taught by one instructor, and each instructor teaches multiple courses. So, the relationship should be **many-to-one** from Course to Instructor.
+6. **with Comment Model:** Each course can have multiple comments, but each comment belongs to only one course. So, the relationship should be **one-to-many** from Course to Comment.
+7. **with Video-Content Model:** Each course can have multiple Videos, but each Video belongs to only one course. So, the relationship should be **one-to-many** from Course to Video-Content.
+
+
+#### Course Model and other tables:
+
 ## Models and CRUD Breakdown
 ### Courses Model
 

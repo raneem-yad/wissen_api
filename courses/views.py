@@ -6,9 +6,9 @@ from .serializers import CourseSerializer
 
 
 class CourseList(APIView):
-    def get(self,request):
+    def get(self, request):
         courses = Course.objects.all()
         serializer = CourseSerializer(
-            courses, many=True, context={'request':request}
+            courses, many=True, context={'request': request}
         )
-        return  Response(serializer.data)
+        return Response(serializer.data)
