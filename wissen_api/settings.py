@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'allauth',
     'djrichtextfield',
+    'drf_yasg',
 
     #custome Apps
     'courses',
@@ -186,4 +187,14 @@ DJRICHTEXTFIELD_CONFIG = {
         ],
         "format_tags": "p;h1;h2;h3;h4;h5",
     },
+}
+
+
+# swagger settings
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Basic': {
+            'type': 'basic'
+        }
+    }
 }
