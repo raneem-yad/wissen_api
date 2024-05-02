@@ -45,6 +45,12 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'cloudinary_storage',
     'cloudinary',
+    'django.contrib.sites',
+    'rest_framework',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
 ]
 
 MIDDLEWARE = [
@@ -55,6 +61,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'allauth.account.middleware.AccountMiddleware',
+
 ]
 
 ROOT_URLCONF = "wissen_api.urls"
@@ -151,3 +159,13 @@ LOGOUT_REDIRECT_URL = "/"
 # Cloudinary Settings
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 CLOUDINARY_URL = os.environ.get("CLOUDINARY_URL")
+
+
+# RestFramework Settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+
+    )
+}
