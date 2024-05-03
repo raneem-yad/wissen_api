@@ -57,6 +57,17 @@ between the designed database and the implemented one due to more clarity when i
 #### Course Model and other tables:
 
 ## Models and CRUD Breakdown
+### Instructor Model
+
+| HTTP   | URI              | CRUD operation               | view name |
+|--------|------------------|------------------------------|-----------|
+| GET    | /instructors     | list all instructors         | LIST      |
+| POST   |                  | create a instructors         |           |
+| GET    | /instructors/:id | retrieve a instructors by id | DETAILS   |
+| PUT    |                  | Update  a instructors by id  |           |
+
+
+
 ### Courses Model
 
 | HTTP   | URI          | CRUD operation           | view name |
@@ -77,7 +88,7 @@ The backend is powered by a robust stack that ensures efficiency and scalability
 
 ## API Documentation
 The project is seamlessly integrated with Swagger API, offering comprehensive details for each API endpoint. It provides examples, detailed information, and an option to test the endpoints directly.
-
+[add link here ]()
 ![swagger](./readme/swagger.png)
 
 
