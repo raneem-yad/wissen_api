@@ -1,4 +1,6 @@
 from django.http import Http404
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Instructor
@@ -13,6 +15,8 @@ class InstructorList(APIView):
 
 
 class InstructorDetails(APIView):
+    serializer_class = InstructorSerializer
+
     def get_object(self, pk):
         try:
             instructor = Instructor.objects.get(pk=pk)
@@ -24,3 +28,12 @@ class InstructorDetails(APIView):
         instructor = self.get_object(pk)
         serializer = InstructorSerializer(instructor, context={'request': request})
         return Response(serializer.data)
+
+    @swagger_auto_schema(request_body=InstructorSerializer)
+    def put(self, request, pk):
+        instructor = self.get_object(pk)
+        serializer = InstructorSerializer(instructor, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
