@@ -38,6 +38,7 @@ urlpatterns = [
     path("djrichtextfield/", include("djrichtextfield.urls")),
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path("courses/" , include('courses.urls')),
+    path("courses/", include('courses.urls')),
+    path("instructors/", include('instructor.urls')),
 
 ]

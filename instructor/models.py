@@ -4,20 +4,20 @@ from django_resized import ResizedImageField
 
 
 class Instructor(models.Model):
-    owner = models.OneToOneField(User, on_delete=models.CASCADE, name="course_owner")
-    name = models.CharField(max_length=200,null=False, blank=False )
-    bio = models.TextField(blank=True)
+    owner = models.OneToOneField(User, on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=200, null=False, blank=False)
+    bio = models.TextField(null=True, blank=True)
     job_title = models.CharField(max_length=100)
-    website_link = models.URLField()
-    linkedin_link = models.URLField()
+    website_link = models.URLField(null=True, blank=True)
+    linkedin_link = models.URLField(null=True, blank=True)
     image = ResizedImageField(
         size=[300, None],
         quality=70,
         upload_to="profiles/",
+        null=True, blank=True
     )
     created_date = models.DateField(auto_now_add=True)
     updated_date = models.DateField(auto_now=True)
-
 
     class Meta:
         ordering = ['-created_date']
