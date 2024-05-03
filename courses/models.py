@@ -27,7 +27,7 @@ class Course(models.Model):
         blank=False,
     )
     is_enrolled = models.BooleanField(default=False)
-    posted_date = models.DateTimeField(auto_now=True)
+    posted_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:

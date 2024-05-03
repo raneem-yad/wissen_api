@@ -53,6 +53,7 @@ INSTALLED_APPS = [
 
     #custome Apps
     'courses',
+    'instructor',
 
 ]
 
