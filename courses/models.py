@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from djrichtextfield.models import RichTextField
 from django_resized import ResizedImageField
 from cloudinary_storage.storage import VideoMediaCloudinaryStorage
@@ -12,6 +13,7 @@ class Course(models.Model):
     """
     Course model which represent Courses
     """
+    teacher = models.ForeignKey(User, on_delete=models.CASCADE)
     course_name = models.CharField(max_length=300, unique=True, null=False, blank=False)
     summery = models.CharField(max_length=200)
     description = models.CharField(max_length=500, null=False, blank=False)
@@ -22,6 +24,7 @@ class Course(models.Model):
         size=[400, None],
         quality=70,
         upload_to="courses/",
+        default="courses/logo_qn9rcl",
         # force_format="WEBP,PNG,JPNG",
         null=False,
         blank=False,
