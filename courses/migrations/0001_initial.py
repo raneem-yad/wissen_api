@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("course_name", models.CharField(max_length=300, unique=True)),
-                ("summery", models.CharField(max_length=200)),
+                ("summary", models.CharField(max_length=200)),
                 ("description", models.CharField(max_length=500)),
                 (
                     "course_requirements",
