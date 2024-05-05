@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     'courses',
     'instructor',
     'category',
-    'comment'
+    'comment',
+    'rating'
 
 ]
 
