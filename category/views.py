@@ -3,13 +3,15 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from wissen_api.permissions import HasInstructorProfile, IsInstructorOrReadOnly
 from .models import Category
 from .serializers import CategorySerializer
 
 
 class CategoryList(APIView):
     serializer_class = CategorySerializer
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly,
+    ]
 
     def get(self, request):
         categories = Category.objects.all()
@@ -34,6 +36,9 @@ class CategoryList(APIView):
 
 class CategoryDetails(APIView):
     serializer_class = CategorySerializer
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly,
+    ]
 
     def get_object(self, pk):
         try:

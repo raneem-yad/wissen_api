@@ -7,6 +7,8 @@ class CourseSerializer(serializers.ModelSerializer):
     is_course_owner = serializers.SerializerMethodField()
     teacher_id = serializers.ReadOnlyField(source='teacher.instructor.id')
     teacher_image = serializers.ReadOnlyField(source='teacher.instructor.image.url')
+    category = serializers.ReadOnlyField(source='course_category.name')
+    category_id = serializers.ReadOnlyField(source='course_category.id')
 
     def get_is_course_owner(self, obj):
         request = self.context['request']
@@ -14,7 +16,8 @@ class CourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ['id', 'course_name', 'summary', 'level', 'description', 'course_requirements', 'learning_goals',
+        fields = ['id', 'course_name', 'category', 'category_id', 'summery', 'level', 'description',
+                  'course_requirements', 'learning_goals',
                   'image', 'is_enrolled', 'teacher', 'is_course_owner', 'teacher_id', 'teacher_image', 'posted_date',
                   'updated_date']
 

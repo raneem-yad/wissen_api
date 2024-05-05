@@ -1,9 +1,13 @@
+from django.contrib.auth.models import User
 from django.http import Http404
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 
+from category.models import Category
+from instructor.models import Instructor
 from wissen_api.permissions import HasInstructorProfile, IsInstructorOrReadOnly
 from .models import Course
 from .serializers import CourseSerializer
@@ -62,7 +66,6 @@ class CourseDetails(APIView):
         serializer = CourseSerializer(course, context={'request': request})
         return Response(serializer.data)
 
-
     @swagger_auto_schema(request_body=CourseSerializer)
     def put(self, request, pk):
         # Allow only instructors to update a course
@@ -90,3 +93,36 @@ class CourseDetails(APIView):
         return Response(
             status=status.HTTP_204_NO_CONTENT
         )
+
+
+class CourseByCategoryList(ListAPIView):
+    serializer_class = CourseSerializer
+
+    def get_queryset(self):
+        category_id = self.kwargs.get('category_id')
+        if category_id is not None:
+            try:
+                category = Category.objects.get(pk=category_id)
+                return category.course_set.all()  # Assuming you have a reverse relation from Category to Course
+            except Category.DoesNotExist:
+                return Course.objects.none()
+        else:
+            return Course.objects.none()
+
+
+class CourseByInstructorList(ListAPIView):
+    serializer_class = CourseSerializer
+
+    def get_queryset(self):
+        instructor_id = self.kwargs.get('instructor_id')
+        # this will return the user id  not the teacher profile id
+        # teacher__id = instructor_id
+        if instructor_id is not None:
+            try:
+                instructor = Instructor.objects.get(id=instructor_id)
+                user = instructor.owner
+                return Course.objects.filter(teacher=user)
+            except Instructor.DoesNotExist:
+                return Course.objects.none()
+        else:
+            return Course.objects.none()  # Return empty queryset if no instructor_id is provided

@@ -67,16 +67,39 @@ between the designed database and the implemented one due to more clarity when i
 | PUT    |                  | Update  a instructors by id  |           |
 
 
+### Course Category Model
+
+| HTTP   | URI             | CRUD operation            | view name |
+|--------|-----------------|---------------------------|-----------|
+| GET    | /categories     | list all categories       | LIST      |
+| POST   |                 | create a categories       |           |
+| GET    | /categories/:id | retrieve a category by id | DETAILS   |
+| PUT    |                 | Update  a category by id  |           |
+| DELETE |                 | Delete  a category by id  |           |
+
 
 ### Courses Model
 
-| HTTP   | URI          | CRUD operation           | view name |
-|--------|--------------|--------------------------|-----------|
-| GET    | /courses     | list all courses         | LIST      |
-| POST   |              | create a courses         |           |
-| GET    | /courses/:id | retrieve a courses by id | DETAILS   |
-| PUT    |              | Update  a courses by id  |           |
-| DELETE |              | Delete  a courses by id  |           |
+| HTTP   | URI                                       | CRUD operation               | view name              |
+|--------|-------------------------------------------|------------------------------|------------------------|
+| GET    | /courses                                  | list all courses             | LIST                   |
+| POST   |                                           | create a courses             |                        |
+| GET    | /courses/:id                              | retrieve a courses by id     | DETAILS                |
+| GET    | courses/by_category/<int:category_id>/    | get courses by Category_id   | CourseByCategoryList   |
+| GET    | courses/by_instructor/<int:instructor_id> | Get courses by Instructor_id | CourseByInstructorList |
+| PUT    |                                           | Update  a courses by id      | DETAILS                |
+| DELETE |                                           | Delete  a courses by id      |                        |
+
+
+### Comments Model
+
+| HTTP   | URI           | CRUD operation           | view name |
+|--------|---------------|--------------------------|-----------|
+| GET    | comments/     | list all comments        | LIST      |
+| POST   |               | create a comments        |           |
+| GET    | /comments/:id | retrieve a comment by id | DETAILS   |
+| PUT    |               | Update  a comment by id  |           |
+| DELETE |               | Delete  a comment by id  |           |
 
 
 ## Technology Stack

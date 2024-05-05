@@ -5,6 +5,8 @@ from django_resized import ResizedImageField
 from cloudinary_storage.storage import VideoMediaCloudinaryStorage
 from cloudinary_storage.validators import validate_video
 
+from category.models import Category
+
 # Choices here
 LEVEL = ((0, "Beginner"), (1, "Intermediate"), (2, "Advanced"))
 
@@ -14,8 +16,9 @@ class Course(models.Model):
     Course model which represent Courses
     """
     teacher = models.ForeignKey(User, on_delete=models.CASCADE)
+    course_category = models.ForeignKey(Category, on_delete=models.CASCADE)
     course_name = models.CharField(max_length=300, unique=True, null=False, blank=False)
-    summary = models.CharField(max_length=200)
+    summery = models.CharField(max_length=200)
     description = models.CharField(max_length=500, null=False, blank=False)
     course_requirements = RichTextField(max_length=10000, null=False, blank=False)
     learning_goals = RichTextField(max_length=10000, null=False, blank=False)

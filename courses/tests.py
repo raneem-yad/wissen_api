@@ -21,7 +21,7 @@ class CourseListViewTests(APITestCase):
         )
 
         adam = User.objects.get(username='adam')
-        Course.objects.create(teacher=adam, course_name='a title', summary='test', description="test description",
+        Course.objects.create(teacher=adam, course_name='a title', summery='test', description="test description",
                               course_requirements="test course_requirements", learning_goals="test learning_goals",
                               image=image)
         response = self.client.get('/courses/')
@@ -46,7 +46,7 @@ class CourseListViewTests(APITestCase):
         form_data = {
             "teacher": teacher.pk,
             "course_name": "This is a test course name.",
-            "summary": "These are the test course summary.",
+            "summery": "These are the test course summery.",
             "description": "dummy description ",
             "course_requirements": "Test course text",
             "learning_goals": "Test course text",
