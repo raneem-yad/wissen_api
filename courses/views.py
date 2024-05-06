@@ -8,6 +8,8 @@ from rest_framework.generics import ListAPIView
 
 from category.models import Category
 from instructor.models import Instructor
+from tags.models import Tags
+from tags.serializers import TagsSerializer
 from wissen_api.permissions import HasInstructorProfile, IsInstructorOrReadOnly
 from .models import Course
 from .serializers import CourseSerializer
@@ -126,3 +128,18 @@ class CourseByInstructorList(ListAPIView):
                 return Course.objects.none()
         else:
             return Course.objects.none()  # Return empty queryset if no instructor_id is provided
+
+
+class TagsByCourseList(ListAPIView):
+    serializer_class = TagsSerializer
+
+    def get_queryset(self):
+        course_id = self.kwargs.get('course_id')
+        if course_id is not None:
+            try:
+                course = Course.objects.get(id=course_id)
+                return course.tags.all()
+            except Course.DoesNotExist:
+                return Tags.objects.none()
+        else:
+            return Tags.objects.none()

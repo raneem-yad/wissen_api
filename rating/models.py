@@ -14,7 +14,6 @@ class Rating(models.Model):
     def __str__(self):
         return f"{self.course} - {self.user}: {self.rating} stars"
 
-
     class Meta:
         ordering = ['-created_at']
         unique_together = ("course", "user")

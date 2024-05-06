@@ -43,5 +43,6 @@ urlpatterns = [
     path("categories/", include('category.urls')),
     path("comments/", include('comment.urls')),
     path("rating/", include('rating.urls')),
+    path("tags/", include('tags.urls')),
 
 ]
