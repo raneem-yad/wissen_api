@@ -7,7 +7,7 @@ courses across various subjects, while empowering instructors to share their exp
 engage with students globally. With intuitive navigation, personalized recommendations, and interactive features, 
 Wissen offers a dynamic learning experience tailored to individual needs and preferences.
 
-## Epics and User Stories
+## User Stories
 The application follows Agile methodology and is managed using a Kanban board, which you can access
 on [kanban board](https://github.com/users/raneem-yad/projects/5/views/1?visibleFields=%5B%22Title%22%2C%22Assignees%22%2C%22Status%22%2C%22Labels%22%2C%22Milestone%22%5D) 
 The project prioritization is done according to the MOSCOW method. For detailed user stories, acceptance criteria,
@@ -54,41 +54,46 @@ between the designed database and the implemented one due to more clarity when i
 7. **with Video-Content Model:** Each course can have multiple Videos, but each Video belongs to only one course. So, the relationship should be **one-to-many** from Course to Video-Content.
 
 
-#### Course Model and other tables:
+#### Instructor Model and other tables:
+1. **with Course Model:** Each course is taught by one instructor, and each instructor teaches multiple courses. So, the relationship should be **many-to-one** from Course to Instructor.
+2. **with Expertise Model:** Each Instructor can have multiple Expertise, and each Expertise can be associated with multiple instructors. Therefore, this relationship should be **many-to-many**.
+3. **with Instructor-Rate Model:** Each Instructor can have multiple ratings, but each rating belongs to only one Instructor. So, the relationship should be **one-to-many** from Instructor to Rate.
 
 ## Models and CRUD Breakdown
 ### Instructor Model
 
-| HTTP   | URI              | CRUD operation               | view name |
-|--------|------------------|------------------------------|-----------|
-| GET    | instructors/     | list all instructors         | LIST      |
-| POST   |                  | create a instructors         |           |
-| GET    | /instructors/:id | retrieve a instructors by id | DETAILS   |
-| PUT    |                  | Update  a instructors by id  |           |
+| HTTP | URI                        | CRUD operation                    | view name                 |
+|------|----------------------------|-----------------------------------|---------------------------|
+| GET  | instructors/               | list all instructors              | LIST                      |
+| POST | instructors/               | create a instructor               |                           |
+| GET  | instructors/:id/           | retrieve a instructor by id       | DETAILS                   |
+| GET  | instructors/:id/expertise/ | retrieve expertises by instructor | ExpertiseByInstructorList |
+| PUT  | instructors/:id/           | Update  a instructor by id        |                           |
 
 
 ### Course Category Model
 
-| HTTP   | URI             | CRUD operation            | view name |
-|--------|-----------------|---------------------------|-----------|
-| GET    | categories/     | list all categories       | LIST      |
-| POST   |                 | create a categories       |           |
-| GET    | /categories/:id | retrieve a category by id | DETAILS   |
-| PUT    |                 | Update  a category by id  |           |
-| DELETE |                 | Delete  a category by id  |           |
+| HTTP   | URI            | CRUD operation            | view name |
+|--------|----------------|---------------------------|-----------|
+| GET    | categories/    | list all categories       | LIST      |
+| POST   |                | create a category         |           |
+| GET    | categories/:id | retrieve a category by id | DETAILS   |
+| PUT    |                | Update  a category by id  |           |
+| DELETE |                | Delete  a category by id  |           |
 
 
 ### Courses Model
 
-| HTTP   | URI                                       | CRUD operation               | view name              |
-|--------|-------------------------------------------|------------------------------|------------------------|
-| GET    | courses/                                  | list all courses             | LIST                   |
-| POST   | courses/                                  | create a courses             |                        |
-| GET    | courses/:id                               | retrieve a courses by id     | DETAILS                |
-| GET    | courses/by_category/<int:category_id>/    | get courses by Category_id   | CourseByCategoryList   |
-| GET    | courses/by_instructor/<int:instructor_id> | Get courses by Instructor_id | CourseByInstructorList |
-| PUT    | courses/:id                               | Update  a courses by id      | DETAILS                |
-| DELETE | courses/:id                               | Delete  a courses by id      |                        |
+| HTTP   | URI                                   | CRUD operation               | view name              |
+|--------|---------------------------------------|------------------------------|------------------------|
+| GET    | courses/                              | list all courses             | LIST                   |
+| POST   | courses/                              | create a course              |                        |
+| GET    | courses/:id/                          | retrieve a course by id      | DETAILS                |
+| GET    | courses/by_category/:category_id/     | get courses by Category_id   | CourseByCategoryList   |
+| GET    | courses/by_instructor/:instructor_id/ | Get courses by Instructor_id | CourseByInstructorList |
+| GET    | courses/:id/tags/                     | Get tags by course_id        | TagsByCourseList       |
+| PUT    | courses/:id/                          | Update  a course by id       | DETAILS                |
+| DELETE | courses/:id/                          | Delete  a course by id       |                        |
 
 
 ### Comments Model
@@ -96,19 +101,41 @@ between the designed database and the implemented one due to more clarity when i
 | HTTP   | URI          | CRUD operation           | view name |
 |--------|--------------|--------------------------|-----------|
 | GET    | comments/    | list all comments        | LIST      |
-| POST   |              | create a comments        |           |
+| POST   |              | create a comment         |           |
 | GET    | comments/:id | retrieve a comment by id | DETAILS   |
 | PUT    |              | Update  a comment by id  |           |
 | DELETE |              | Delete  a comment by id  |           |
 
 ### Rating Model
 
-| HTTP   | URI           | CRUD operation           | view name |
-|--------|---------------|--------------------------|-----------|
-| GET    | comments/     | list all comments        | LIST      |
-| POST   |               | create a comments        |           |
-| GET    | /comments/:id | retrieve a comment by id | DETAILS   |
-| DELETE |               | Delete  a comment by id  |           |
+| HTTP   | URI         | CRUD operation        | view name |
+|--------|-------------|-----------------------|-----------|
+| GET    | ratings/    | list all ratings      | LIST      |
+| POST   |             | create a rate         |           |
+| GET    | ratings/:id | retrieve a rate by id | DETAILS   |
+| DELETE |             | Delete  a rate by id  |           |
+
+### Tags Model
+
+| HTTP   | URI              | CRUD operation              | view name        |
+|--------|------------------|-----------------------------|------------------|
+| GET    | tags/            | list all tags               | LIST             |
+| POST   | tags/            | create a tag                |                  |
+| GET    | tags/:id/        | retrieve a tags by id       | DETAILS          |
+| GET    | tags/:id/courses | retrieve all courses by tag | CoursesByTagList |
+| DELETE | tags/:id         | Delete  a tags by id        |                  |
+
+
+### Expertise Model
+
+| HTTP   | URI                        | CRUD operation                       | view name                  |
+|--------|----------------------------|--------------------------------------|----------------------------|
+| GET    | Expertise/                 | list all Expertises                  | LIST                       |
+| POST   | Expertise/                 | create a Expertise                   |                            |
+| GET    | Expertise/:id/             | retrieve a Expertise by id           | DETAILS                    |
+| GET    | Expertise/:id/instructors/ | retrieve all instructos by expertise | InstructorsByExpertiseList |
+| DELETE | Expertise/:id/             | Delete  a Expertise by id            | DETAILS                    |
+
 
 ## Technology Stack
 The backend is powered by a robust stack that ensures efficiency and scalability:
