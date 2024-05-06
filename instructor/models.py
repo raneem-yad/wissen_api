@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django_resized import ResizedImageField
 
+from expertise.models import Expertise
+
 
 class Instructor(models.Model):
     owner = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -10,6 +12,7 @@ class Instructor(models.Model):
     job_title = models.CharField(max_length=100)
     website_link = models.URLField(null=True, blank=True)
     linkedin_link = models.URLField(null=True, blank=True)
+    expertise = models.ManyToManyField(Expertise, related_name='instructors')
     image = ResizedImageField(
         size=[300, None],
         quality=70,

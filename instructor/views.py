@@ -1,8 +1,11 @@
 from django.http import Http404
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from expertise.models import Expertise
+from expertise.serializers import ExpertiseSerializer
 from .models import Instructor
 from .serializers import InstructorSerializer
 from wissen_api.permissions import IsOwnerOrReadOnly
@@ -36,10 +39,23 @@ class InstructorDetails(APIView):
     @swagger_auto_schema(request_body=InstructorSerializer)
     def put(self, request, pk):
         instructor = self.get_object(pk)
-        serializer = InstructorSerializer(instructor, data=request.data,  context={'request': request})
+        serializer = InstructorSerializer(instructor, data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class ExpertiseByInstructorList(generics.ListAPIView):
+    serializer_class = ExpertiseSerializer
+
+    def get_queryset(self):
+        instructor_id = self.kwargs.get('pk')
+        if instructor_id is not None:
+            try:
+                course = Instructor.objects.get(id=instructor_id)
+                return course.tags.all()
+            except Instructor.DoesNotExist:
+                return Expertise.objects.none()
+        else:
+            return Expertise.objects.none()
