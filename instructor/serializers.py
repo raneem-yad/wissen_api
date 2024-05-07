@@ -15,5 +15,6 @@ class InstructorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Instructor
-        fields = ['id', 'owner', 'full_name', 'bio','expertise', 'job_title', 'website_link', 'linkedin_link',
-                  'image', 'is_owner', 'created_date', 'updated_date']
+        fields = ['id', 'owner','expertise', 'job_title',
+                  'website_link', 'linkedin_link', 'is_owner',
+                  'created_date', 'updated_date']

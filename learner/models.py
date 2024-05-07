@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
 from django_resized import ResizedImageField
 
 from courses.models import Course
@@ -15,6 +16,7 @@ class Learner(models.Model):
         upload_to="profiles/",
         null=True, blank=True
     )
+    instructor_id = models.IntegerField(null=True)
     created_date = models.DateField(auto_now_add=True)
     updated_date = models.DateField(auto_now=True)
 
@@ -23,3 +25,14 @@ class Learner(models.Model):
 
     def __str__(self):
         return f"{self.owner}'s learner profile"
+
+
+def create_learner_profile(sender, instance, created, **kwargs):
+    """Creates profile when a new user is created"""
+    if created:
+        Learner.objects.create(owner=instance)
+
+
+# signal to listen for when a new user is saved
+# and create a learner profile
+post_save.connect(create_learner_profile, sender=User)
