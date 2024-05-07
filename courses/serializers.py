@@ -1,7 +1,9 @@
 from django.contrib.auth.models import User
+from django.db.models import Avg
 from rest_framework import serializers
 
 from learner.models import Learner
+from rating.models import Rating
 from tags.serializers import TagsSerializer
 from .models import Course, VideoContent
 
@@ -18,6 +20,8 @@ class CourseSerializer(serializers.ModelSerializer):
     students_names = serializers.StringRelatedField(many=True, read_only=True)
     student_id = serializers.SerializerMethodField()
     is_learner_enrolled_in_course = serializers.SerializerMethodField()
+    rating_value = serializers.SerializerMethodField()
+    rating_count = serializers.SerializerMethodField()
 
     def get_is_course_owner(self, obj):
         request = self.context['request']
@@ -41,12 +45,20 @@ class CourseSerializer(serializers.ModelSerializer):
                 return learner in learners
         return False
 
+    def get_rating_value(self, obj):
+        # Calculate average rating for the course
+        return Rating.objects.filter(course=obj).aggregate(Avg("rating"))["rating__avg"] or 0
+
+    def get_rating_count(self, obj):
+        # Count the number of ratings for the course
+        return Rating.objects.filter(course=obj).count()
+
 
     class Meta:
         model = Course
         fields = ['id', 'course_name', 'category', 'category_id', 'summery', 'level', 'description',
                   'course_requirements', 'learning_goals', 'tags', 'students', 'students_names', 'student_id',
-                  'is_learner_enrolled_in_course',
+                  'is_learner_enrolled_in_course', 'rating_value', 'rating_count',
                   'image', 'teacher', 'is_course_owner', 'teacher_id', 'teacher_image', 'posted_date',
                   'updated_date']
 
