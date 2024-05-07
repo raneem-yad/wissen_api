@@ -45,5 +45,6 @@ urlpatterns = [
     path("rating/", include('rating.urls')),
     path("tags/", include('tags.urls')),
     path("expertise/", include('expertise.urls')),
+    path("instructor-rating/", include('instructor_rating.urls')),
 
 ]

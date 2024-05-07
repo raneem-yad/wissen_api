@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'rating',
     'tags',
     'expertise',
+    'instructor_rating',
 
 ]
 

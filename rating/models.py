@@ -19,8 +19,8 @@ class Rating(models.Model):
         unique_together = ("course", "user")
 
     @classmethod
-    def get_average_rating(cls, recipe_id):
-        average_rating = cls.objects.filter(recipe_id=recipe_id).aggregate(
+    def get_average_rating(cls, course_id):
+        average_rating = cls.objects.filter(course_id=course_id).aggregate(
             Avg("rating")
         )["rating__avg"]
         return average_rating or 0
