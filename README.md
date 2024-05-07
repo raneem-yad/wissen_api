@@ -136,6 +136,16 @@ between the designed database and the implemented one due to more clarity when i
 | GET    | Expertise/:id/instructors/ | retrieve all instructos by expertise | InstructorsByExpertiseList |
 | DELETE | Expertise/:id/             | Delete  a Expertise by id            | DETAILS                    |
 
+### Instructor Rating Model
+
+| HTTP   | URI                   | CRUD operation                          | view name |
+|--------|-----------------------|-----------------------------------------|-----------|
+| GET    | instructor-rating/    | list all ratings for an instructor      | LIST      |
+| POST   |                       | create a rate for an instructor         |           |
+| GET    | instructor-rating/:id | retrieve a rate by id for an instructor | DETAILS   |
+| DELETE |                       | Delete  a rate by id  for an instructor |           |
+
+
 
 ## Technology Stack
 The backend is powered by a robust stack that ensures efficiency and scalability:
