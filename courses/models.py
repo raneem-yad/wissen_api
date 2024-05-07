@@ -16,10 +16,11 @@ class Course(models.Model):
     """
     Course model which represent Courses
     """
-    teacher = models.ForeignKey(User, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(User, on_delete=models.CASCADE,related_name='courses_taught')
     course_category = models.ForeignKey(Category, on_delete=models.CASCADE)
     course_name = models.CharField(max_length=300, unique=True, null=False, blank=False)
     tags = models.ManyToManyField(Tags, related_name='courses')
+    students = models.ManyToManyField(User, related_name='courses_enrolled')
     summery = models.CharField(max_length=200)
     description = models.CharField(max_length=500, null=False, blank=False)
     course_requirements = RichTextField(max_length=10000, null=False, blank=False)
@@ -34,7 +35,6 @@ class Course(models.Model):
         null=False,
         blank=False,
     )
-    is_enrolled = models.BooleanField(default=False)
     posted_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 

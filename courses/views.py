@@ -8,6 +8,7 @@ from rest_framework.generics import ListAPIView
 
 from category.models import Category
 from instructor.models import Instructor
+from learner.models import Learner
 from tags.models import Tags
 from tags.serializers import TagsSerializer
 from wissen_api.permissions import HasInstructorProfile, IsInstructorOrReadOnly
@@ -95,6 +96,28 @@ class CourseDetails(APIView):
         return Response(
             status=status.HTTP_204_NO_CONTENT
         )
+
+
+class EnrollStudentAPIView(APIView):
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly,
+    ]
+
+    def post(self, request, course_id):
+        try:
+            course = Course.objects.get(pk=course_id)
+        except Course.DoesNotExist:
+            return Response({"error": "Course not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Retrieve the learner associated with the current user
+        learner = Learner.objects.filter(owner=request.user).first()
+        if not learner:
+            return Response({"error": "Learner profile not found for the current user"},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        # Add the learner's user instance to the course's students
+        course.students.add(learner.owner)
+        return Response({"message": "Student enrolled successfully"}, status=status.HTTP_200_OK)
 
 
 class CourseByCategoryList(ListAPIView):

@@ -25,7 +25,7 @@ schema_view = get_schema_view(
     openapi.Info(
         title="Wissen Website API",
         default_version='v1',
-        description="My API description",
+        description="My Wissen Website API description",
         contact=openapi.Contact(email="ranoprog@gmail.com"),
     ),
     public=True,
