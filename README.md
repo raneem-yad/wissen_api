@@ -62,13 +62,14 @@ between the designed database and the implemented one due to more clarity when i
 ## Models and CRUD Breakdown
 ### Instructor Model
 
-| HTTP | URI                        | CRUD operation                    | view name                 |
-|------|----------------------------|-----------------------------------|---------------------------|
-| GET  | instructors/               | list all instructors              | LIST                      |
-| POST | instructors/               | create a instructor               |                           |
-| GET  | instructors/:id/           | retrieve a instructor by id       | DETAILS                   |
-| GET  | instructors/:id/expertise/ | retrieve expertises by instructor | ExpertiseByInstructorList |
-| PUT  | instructors/:id/           | Update  a instructor by id        |                           |
+| HTTP | URI                          | CRUD operation                    | view name                 |
+|------|------------------------------|-----------------------------------|---------------------------|
+| GET  | instructors/                 | list all instructors              | LIST                      |
+| GET  | instructors/top-instructors/ | list top 6 instructors            | LIST                      |
+| POST | instructors/                 | create a instructor               |                           |
+| GET  | instructors/:id/             | retrieve a instructor by id       | DETAILS                   |
+| GET  | instructors/:id/expertise/   | retrieve expertises by instructor | ExpertiseByInstructorList |
+| PUT  | instructors/:id/             | Update  a instructor by id        |                           |
 
 
 ### Course Category Model

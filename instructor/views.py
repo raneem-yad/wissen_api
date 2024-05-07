@@ -1,3 +1,4 @@
+from django.db.models import Avg
 from django.http import Http404
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status, generics
@@ -6,6 +7,7 @@ from rest_framework.views import APIView
 
 from expertise.models import Expertise
 from expertise.serializers import ExpertiseSerializer
+from instructor_rating.models import InstructorRating
 from .models import Instructor
 from .serializers import InstructorSerializer
 from wissen_api.permissions import IsOwnerOrReadOnly
@@ -59,3 +61,15 @@ class ExpertiseByInstructorList(generics.ListAPIView):
                 return Expertise.objects.none()
         else:
             return Expertise.objects.none()
+
+
+class TopInstructorsView(APIView):
+    def get(self, request):
+        # Get the top 6 instructors based on average rating
+        top_instructors = Instructor.objects.annotate(avg_rating=Avg('instructor_ratings__rating')).order_by(
+            '-avg_rating')[:6]
+
+        # Serialize the queryset
+        serializer = InstructorSerializer(top_instructors, many=True, context={'request': request})
+
+        return Response(serializer.data)
