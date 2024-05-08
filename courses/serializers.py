@@ -54,10 +54,10 @@ class CourseSerializer(serializers.ModelSerializer):
 
     def get_rating_count(self, obj):
         # Count the number of ratings for the course
-        return Rating.objects.filter(course=obj).count()
+        return Rating.objects.filter(course=obj).values('user').distinct().count()
 
     def get_comments_count(self, obj):
-        comments_count = Comment.objects.filter(course=obj).count()
+        comments_count = Comment.objects.filter(course=obj).values('owner').distinct().count()
         return comments_count
 
     def get_comments(self, obj):

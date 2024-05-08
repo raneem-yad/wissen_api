@@ -27,7 +27,7 @@ class CategoryList(APIView):
         # Allow only instructors to create a course
         if not HasInstructorProfile().has_permission(request, self):
             return Response(
-                {"detail": "You must have an instructor profile to create a course."},
+                {"detail": "You must have an instructor profile to create a Category."},
                 status=status.HTTP_403_FORBIDDEN
             )
 
@@ -69,7 +69,7 @@ class CategoryDetails(APIView):
         # Allow only instructors to create a course
         if not HasInstructorProfile().has_permission(request, self):
             return Response(
-                {"detail": "You must have an instructor profile to create a course."},
+                {"detail": "You must have an instructor profile to create a Category."},
                 status=status.HTTP_403_FORBIDDEN
             )
 
@@ -84,7 +84,7 @@ class CategoryDetails(APIView):
         # Allow only instructors to create a course
         if not HasInstructorProfile().has_permission(request, self):
             return Response(
-                {"detail": "You must have an instructor profile to create a course."},
+                {"detail": "You must have an instructor profile to create a Category."},
                 status=status.HTTP_403_FORBIDDEN
             )
 

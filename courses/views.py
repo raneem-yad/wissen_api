@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.http import Http404
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import status, permissions
+from rest_framework import status, permissions, filters
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
@@ -21,9 +21,36 @@ class CourseList(APIView):
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly,
     ]
+    filter_backends = [
+        filters.OrderingFilter,
+        filters.SearchFilter,
+    ]
+    search_fields = [
+        'teacher__username',
+        'course_name',
+    ]
+    ordering_fields = [
+        'course_name',
+        'comments_count',
+        'posted_date',
+    ]
 
     def get(self, request):
-        courses = Course.objects.all()
+        # ?sort_by=name&ascending=true
+        # ?sort_by=created_at&ascending=false
+        sort_by = request.query_params.get('sort_by')
+        ascending = request.query_params.get('ascending', 'true').lower() == 'true'
+
+        # Define the default ordering
+        ordering = '-posted_date'  # Default to descending order of date created
+
+        if sort_by == 'name':
+            ordering = 'course_name' if ascending else '-course_name'
+
+        if sort_by == 'posted_date':
+            ordering = 'posted_date' if ascending else '-posted_date'
+
+        courses = Course.objects.all().order_by(ordering)
         serializer = CourseSerializer(
             courses, many=True, context={'request': request}
         )
