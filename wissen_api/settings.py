@@ -43,6 +43,7 @@ REST_USE_JWT = True
 JWT_AUTH_SECURE = True
 JWT_AUTH_COOKIE = 'my-app-auth'
 JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
+JWT_AUTH_SAMESITE = 'None'
 
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'drf_api.serializers.CurrentUserSerializer'
@@ -81,7 +82,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'dj_rest_auth.registration',
-
+    'corsheaders',
 
     #custome Apps
     'courses',
@@ -105,7 +106,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'allauth.account.middleware.AccountMiddleware',
-
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = "wissen_api.urls"
@@ -141,6 +142,16 @@ SITE_ID = 1
 DATABASES = {"default": dj_database_url.parse(os.environ.get("DATABASE_URL"))}
 
 CSRF_TRUSTED_ORIGINS = ["https://*.herokuapp.com", "https://*.gitpod.io"]
+if 'CLIENT_ORIGIN' in os.environ:
+     CORS_ALLOWED_ORIGINS = [
+         os.environ.get('CLIENT_ORIGIN')
+     ]
+else:
+     CORS_ALLOWED_ORIGIN_REGEXES = [
+         r"^https://.*\.gitpod\.io$",
+     ]
+
+CORS_ALLOW_CREDENTIALS = True
 if "test" in sys.argv:
     DATABASES["default"]["ENGINE"] = "django.db.backends.sqlite3"
 
