@@ -76,7 +76,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'allauth',
     'djrichtextfield',
-    'django_filter',
+    'django_filters',
     'rest_framework.authtoken',
     'dj_rest_auth',
     'allauth.account',
