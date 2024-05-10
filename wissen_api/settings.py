@@ -145,11 +145,12 @@ DATABASES = {"default": dj_database_url.parse(os.environ.get("DATABASE_URL"))}
 CSRF_TRUSTED_ORIGINS = ["https://*.herokuapp.com", "https://*.gitpod.io"]
 if 'CLIENT_ORIGIN' in os.environ:
      CORS_ALLOWED_ORIGINS = [
-         os.environ.get('CLIENT_ORIGIN')
+         os.environ.get('CLIENT_ORIGIN'),  'http://localhost:3000',
      ]
 else:
      CORS_ALLOWED_ORIGIN_REGEXES = [
          r"^https://.*\.gitpod\.io$",
+         'http://localhost:3000',
      ]
 
 CORS_ALLOW_CREDENTIALS = True
