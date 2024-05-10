@@ -7,7 +7,7 @@ from expertise.models import Expertise
 
 class Instructor(models.Model):
     owner = models.OneToOneField(User, on_delete=models.CASCADE)
-    job_title = models.CharField(max_length=100)
+    job_title = models.CharField(max_length=100,null=True, blank=True)
     full_name = models.CharField(max_length=200, null=False, blank=False, default="test case")
     bio = models.TextField(null=True, blank=True)
     image = ResizedImageField(
