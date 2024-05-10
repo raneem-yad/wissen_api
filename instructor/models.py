@@ -1,11 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django_resized import ResizedImageField
+
 from expertise.models import Expertise
 
 
 class Instructor(models.Model):
     owner = models.OneToOneField(User, on_delete=models.CASCADE)
     job_title = models.CharField(max_length=100)
+    full_name = models.CharField(max_length=200, null=False, blank=False, default="test case")
+    bio = models.TextField(null=True, blank=True)
+    image = ResizedImageField(
+        size=[300, None],
+        quality=70,
+        upload_to="profiles/",
+        null=True, blank=True
+    )
     website_link = models.URLField(null=True, blank=True)
     linkedin_link = models.URLField(null=True, blank=True)
     expertise = models.ManyToManyField(Expertise, related_name='instructors')

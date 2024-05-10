@@ -16,7 +16,6 @@ class Learner(models.Model):
         upload_to="profiles/",
         null=True, blank=True
     )
-    instructor_id = models.IntegerField(null=True)
     created_date = models.DateField(auto_now_add=True)
     updated_date = models.DateField(auto_now=True)
 
