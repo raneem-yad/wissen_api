@@ -24,13 +24,12 @@ class Learner(models.Model):
     def __str__(self):
         return f"{self.owner}'s learner profile"
 
-
-def create_learner_profile(sender, instance, created, **kwargs):
-    """Creates profile when a new user is created"""
-    if created:
-        Learner.objects.create(owner=instance)
-
-
-# signal to listen for when a new user is saved
-# and create a learner profile
-post_save.connect(create_learner_profile, sender=User)
+# def create_learner_profile(sender, instance, created, **kwargs):
+#     """Creates profile when a new user is created"""
+#     if created:
+#         Learner.objects.create(owner=instance)
+#
+#
+# # signal to listen for when a new user is saved
+# # and create a learner profile
+# post_save.connect(create_learner_profile, sender=User)

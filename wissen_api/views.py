@@ -1,5 +1,8 @@
+from dj_rest_auth.registration.views import RegisterView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+
+from .serializers import CustomRegisterSerializer
 from .settings import (
     JWT_AUTH_COOKIE, JWT_AUTH_REFRESH_COOKIE, JWT_AUTH_SAMESITE,
     JWT_AUTH_SECURE,
@@ -36,3 +39,11 @@ def logout_route(request):
         secure=JWT_AUTH_SECURE,
     )
     return response
+
+
+class CustomRegisterView(RegisterView):
+    serializer_class = CustomRegisterSerializer
+
+    # def perform_create(self, serializer):
+    #     user = serializer.save(self.request)
+    #     serializer.custom_signup(self.request, user)

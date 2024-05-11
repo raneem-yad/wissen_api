@@ -21,7 +21,7 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-from wissen_api.views import logout_route
+from wissen_api.views import logout_route, CustomRegisterView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -41,9 +41,10 @@ urlpatterns = [
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
     # our logout route has to be above the default one to be matched first
     path('dj-rest-auth/logout/', logout_route),
-    path(
-        'dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')
-    ),
+    path('dj-rest-auth/registration/', CustomRegisterView.as_view(), name='custom_register'),
+    # path(
+    #     'dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')
+    # ),
     path("djrichtextfield/", include("djrichtextfield.urls")),
 
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
