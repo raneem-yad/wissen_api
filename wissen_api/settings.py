@@ -75,14 +75,14 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'cloudinary_storage',
     'cloudinary',
-    'django.contrib.sites',
     'rest_framework',
     'drf_yasg',
-    'allauth',
     'djrichtextfield',
     'django_filters',
     'rest_framework.authtoken',
     'dj_rest_auth',
+    'django.contrib.sites',
+    'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'dj_rest_auth.registration',
@@ -219,16 +219,6 @@ LOGOUT_REDIRECT_URL = "/"
 # Cloudinary Settings
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 CLOUDINARY_URL = os.environ.get("CLOUDINARY_URL")
-
-
-# RestFramework Settings
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-
-    )
-}
 
 
 #rich text
