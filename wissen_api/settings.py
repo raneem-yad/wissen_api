@@ -45,10 +45,10 @@ JWT_AUTH_COOKIE = 'my-app-auth'
 JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
 JWT_AUTH_SAMESITE = 'None'
 
-# REST_AUTH_SERIALIZERS = {
-#     'USER_DETAILS_SERIALIZER': 'wissen_api.serializers.CustomUserDetailsSerializer',
-#
-# }
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'wissen_api.serializers.CustomUserDetailsSerializer',
+
+}
 
 REST_AUTH = {
     'USER_DETAILS_SERIALIZER': 'wissen_api.serializers.CustomUserDetailsSerializer',
@@ -61,15 +61,6 @@ REST_AUTH = {
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY")
-
-# SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = 'DEVELOPMENT' in os.environ
-ALLOWED_HOSTS = [".herokuapp.com", "127.0.0.1", ".gitpod.io"]
-
-
-# Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -79,9 +70,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'cloudinary_storage',
     'cloudinary',
+
     'rest_framework',
-    'drf_yasg',
-    'djrichtextfield',
     'django_filters',
     'rest_framework.authtoken',
     'dj_rest_auth',
@@ -90,6 +80,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'dj_rest_auth.registration',
+    'drf_yasg',
+    'djrichtextfield',
     'corsheaders',
 
     #custome Apps
@@ -105,6 +97,15 @@ INSTALLED_APPS = [
 
 ]
 
+# SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = True
+DEBUG = 'DEVELOPMENT' in os.environ
+ALLOWED_HOSTS = [".herokuapp.com", "127.0.0.1", ".gitpod.io"]
+
+
+# Application definition
+
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -114,7 +115,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'allauth.account.middleware.AccountMiddleware',
+    # 'allauth.account.middleware.AccountMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 ]
 
