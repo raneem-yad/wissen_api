@@ -4,11 +4,38 @@ from rest_framework import serializers
 
 from instructor.models import Instructor
 from learner.models import Learner
+from django.conf import settings
 
 
 class CurrentUserSerializer(UserDetailsSerializer):
     profile_id = serializers.ReadOnlyField(source='learner.id')
     profile_image = serializers.ReadOnlyField(source='learner.image.url')
+
+    class Meta(UserDetailsSerializer.Meta):
+        fields = UserDetailsSerializer.Meta.fields + (
+            'profile_id', 'profile_image'
+        )
+
+
+class CustomUserDetailsSerializer(UserDetailsSerializer):
+    profile_image = serializers.SerializerMethodField()
+    profile_id = serializers.SerializerMethodField()
+
+    def get_profile_image(self, user):
+        if hasattr(user, 'learner') and user.learner.image:
+            return settings.MEDIA_URL + str(user.learner.image)
+        elif hasattr(user, 'instructor') and user.instructor.image:
+            return settings.MEDIA_URL + str(user.instructor.image)
+        else:
+            return None
+
+    def get_profile_id(self, user):
+        if hasattr(user, 'learner'):
+            return user.learner.id
+        elif hasattr(user, 'instructor'):
+            return user.instructor.id
+        else:
+            return None
 
     class Meta(UserDetailsSerializer.Meta):
         fields = UserDetailsSerializer.Meta.fields + (

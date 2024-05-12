@@ -45,9 +45,13 @@ JWT_AUTH_COOKIE = 'my-app-auth'
 JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
 JWT_AUTH_SAMESITE = 'None'
 
-REST_AUTH_SERIALIZERS = {
-    'USER_DETAILS_SERIALIZER': 'wissen_api.serializers.CurrentUserSerializer',
+# REST_AUTH_SERIALIZERS = {
+#     'USER_DETAILS_SERIALIZER': 'wissen_api.serializers.CustomUserDetailsSerializer',
+#
+# }
 
+REST_AUTH = {
+    'USER_DETAILS_SERIALIZER': 'wissen_api.serializers.CustomUserDetailsSerializer',
 }
 # REST_AUTH_REGISTER_SERIALIZERS = {
 #     'REGISTER_SERIALIZER': 'wissen_api.serializers.CustomRegisterSerializer',
