@@ -4,7 +4,7 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status, permissions, filters
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView
 
 from category.models import Category
 from instructor.models import Instructor
@@ -16,7 +16,7 @@ from .models import Course
 from .serializers import CourseSerializer
 
 
-class CourseList(APIView):
+class CourseList(ListAPIView, CreateAPIView):
     serializer_class = CourseSerializer
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly,
@@ -34,12 +34,14 @@ class CourseList(APIView):
         'comments_count',
         'posted_date',
     ]
+    queryset = Course.objects.all()
 
-    def get(self, request):
+    def get_queryset(self):
+        queryset = super().get_queryset()
         # ?sort_by=name&ascending=true
         # ?sort_by=created_at&ascending=false
-        sort_by = request.query_params.get('sort_by')
-        ascending = request.query_params.get('ascending', 'true').lower() == 'true'
+        sort_by = self.request.query_params.get('sort_by')
+        ascending = self.request.query_params.get('ascending', 'true').lower() == 'true'
 
         # Define the default ordering
         ordering = '-posted_date'  # Default to descending order of date created
@@ -50,14 +52,10 @@ class CourseList(APIView):
         if sort_by == 'posted_date':
             ordering = 'posted_date' if ascending else '-posted_date'
 
-        courses = Course.objects.all().order_by(ordering)
-        serializer = CourseSerializer(
-            courses, many=True, context={'request': request}
-        )
-        return Response(serializer.data)
+        return queryset.order_by(ordering)
 
     @swagger_auto_schema(request_body=CourseSerializer)
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         # Allow only instructors to create a course
         if not HasInstructorProfile().has_permission(request, self):
             return Response(
@@ -65,64 +63,41 @@ class CourseList(APIView):
                 status=status.HTTP_403_FORBIDDEN
             )
 
-        serializer = CourseSerializer(
-            data=request.data, context={'request': request}
-        )
-        if serializer.is_valid():
-            serializer.save(teacher=request.user)
-            return Response(
-                serializer.data, status=status.HTTP_201_CREATED
-            )
-        return Response(
-            serializer.errors, status=status.HTTP_400_BAD_REQUEST
-        )
+        return super().post(request, *args, **kwargs)
 
 
-class CourseDetails(APIView):
+class CourseDetails(RetrieveUpdateDestroyAPIView):
     serializer_class = CourseSerializer
     permission_classes = [IsInstructorOrReadOnly]
 
-    def get_object(self, pk):
+    def get_queryset(self):
+        return Course.objects.all()
+
+    def get_object(self):
+        pk = self.kwargs.get('pk')
         try:
-            course = Course.objects.get(pk=pk)
-            self.check_object_permissions(self.request, course)
-            return course
+            return self.get_queryset().get(pk=pk)
         except Course.DoesNotExist:
             raise Http404
 
-    def get(self, request, pk):
-        course = self.get_object(pk)
-
-        serializer = CourseSerializer(course, context={'request': request})
-        return Response(serializer.data)
-
     @swagger_auto_schema(request_body=CourseSerializer)
-    def put(self, request, pk):
+    def put(self, request, *args, **kwargs):
         # Allow only instructors to update a course
         if not HasInstructorProfile().has_permission(request, self):
             return Response(
                 {"detail": "You must have an instructor profile to create a course."},
                 status=status.HTTP_403_FORBIDDEN
             )
-        course = self.get_object(pk)
-        serializer = CourseSerializer(course, data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return super().put(request, *args, **kwargs)
 
-    def delete(self, request, pk):
+    def delete(self, request, *args, **kwargs):
         # Allow only instructors to delete a course
         if not HasInstructorProfile().has_permission(request, self):
             return Response(
                 {"detail": "You must have an instructor profile to create a course."},
                 status=status.HTTP_403_FORBIDDEN
             )
-        course = self.get_object(pk)
-        course.delete()
-        return Response(
-            status=status.HTTP_204_NO_CONTENT
-        )
+        return super().delete(request, *args, **kwargs)
 
 
 class EnrollStudentAPIView(APIView):
