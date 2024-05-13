@@ -53,6 +53,10 @@ REST_AUTH_SERIALIZERS = {
 REST_AUTH = {
     'USER_DETAILS_SERIALIZER': 'wissen_api.serializers.CustomUserDetailsSerializer',
 }
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+]
 # REST_AUTH_REGISTER_SERIALIZERS = {
 #     'REGISTER_SERIALIZER': 'wissen_api.serializers.CustomRegisterSerializer',
 # }
