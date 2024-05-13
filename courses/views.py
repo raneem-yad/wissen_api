@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
-from django.http import Http404
+from django.http import Http404, QueryDict
+from django.utils.datastructures import MultiValueDict
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status, permissions, filters
 from rest_framework.response import Response
@@ -54,22 +55,24 @@ class CourseList(ListAPIView, CreateAPIView):
 
         return queryset.order_by(ordering)
 
+    def perform_create(self, serializer):
+        serializer.save(teacher=self.request.user)
+
     @swagger_auto_schema(request_body=CourseSerializer)
     def post(self, request, *args, **kwargs):
         # Allow only instructors to create a course
         if not HasInstructorProfile().has_permission(request, self):
             return Response(
                 {"detail": "You must have an instructor profile to create a course.",
-                 "request":request.user},
+                 "request": request.user},
                 status=status.HTTP_403_FORBIDDEN
             )
-
         return super().post(request, *args, **kwargs)
 
 
 class CourseDetails(RetrieveUpdateDestroyAPIView):
     serializer_class = CourseSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly,]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
 
     def get_queryset(self):
         return Course.objects.all()

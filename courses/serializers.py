@@ -2,10 +2,12 @@ from django.contrib.auth.models import User
 from django.db.models import Avg
 from rest_framework import serializers
 
+from category.models import Category
 from comment.models import Comment
 from comment.serializers import CommentSerializer
 from learner.models import Learner
 from rating.models import Rating
+from tags.models import Tags
 from tags.serializers import TagsSerializer
 from .models import Course, VideoContent
 
@@ -15,16 +17,23 @@ class CourseSerializer(serializers.ModelSerializer):
     is_course_owner = serializers.SerializerMethodField()
     teacher_id = serializers.ReadOnlyField(source='teacher.instructor.id')
     teacher_image = serializers.ReadOnlyField(source='teacher.instructor.image.url')
-    category = serializers.ReadOnlyField(source='course_category.name')  # one-to-many relationship
+
+    category = serializers.PrimaryKeyRelatedField(source='course_category', queryset=Category.objects.all())
+    category_name = serializers.ReadOnlyField(source='course_category.name')  # one-to-many relationship
     category_id = serializers.ReadOnlyField(source='course_category.id')
-    tags = TagsSerializer(many=True, read_only=True)  # many-to-many relationship
+
+    tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tags.objects.all())
+    tags_details = serializers.ReadOnlyField(source='get_tags_details')
+
     students = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     students_count = serializers.ReadOnlyField(source='students.count', read_only=True)
     students_names = serializers.StringRelatedField(many=True, read_only=True)
     student_id = serializers.SerializerMethodField()
     is_learner_enrolled_in_course = serializers.SerializerMethodField()
+
     rating_value = serializers.SerializerMethodField()
     rating_count = serializers.SerializerMethodField()
+
     comments_count = serializers.SerializerMethodField()
     comments = serializers.SerializerMethodField()
 
@@ -69,9 +78,10 @@ class CourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ['id', 'course_name', 'category', 'category_id', 'summery', 'level', 'description',
-                  'course_requirements', 'learning_goals', 'tags', 'students','students_count', 'students_names', 'student_id',
-                  'is_learner_enrolled_in_course', 'rating_value', 'rating_count','comments', 'comments_count',
+        fields = ['id', 'course_name', 'category', 'category_name', 'category_id', 'summery', 'level', 'description',
+                  'course_requirements', 'learning_goals', 'tags', 'tags_details', 'students', 'students_count',
+                  'students_names', 'student_id',
+                  'is_learner_enrolled_in_course', 'rating_value', 'rating_count', 'comments', 'comments_count',
                   'image', 'teacher', 'is_course_owner', 'teacher_id', 'teacher_image', 'posted_date',
                   'updated_date']
 
