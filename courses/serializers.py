@@ -34,9 +34,11 @@ class CourseSerializer(serializers.ModelSerializer):
 
     def get_student_id(self, obj):
         request = self.context['request']
-        learner = Learner.objects.filter(owner=request.user).first()
-        if learner:
-            return learner.id
+        if request and request.user.is_authenticated:
+            learner = Learner.objects.filter(owner=request.user).first()
+            if learner:
+                return learner.id
+            return None
         return None
 
     def get_is_learner_enrolled_in_course(self, obj):
