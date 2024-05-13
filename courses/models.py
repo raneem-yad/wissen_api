@@ -20,7 +20,7 @@ class Course(models.Model):
     course_category = models.ForeignKey(Category, on_delete=models.CASCADE)
     course_name = models.CharField(max_length=300, unique=True, null=False, blank=False)
     tags = models.ManyToManyField(Tags, related_name='courses')
-    students = models.ManyToManyField(User, related_name='courses_enrolled')
+    students = models.ManyToManyField(User, related_name='courses_enrolled',blank=True,null=True)
     summery = models.CharField(max_length=200)
     description = models.CharField(max_length=500, null=False, blank=False)
     course_requirements = RichTextField(max_length=10000, null=False, blank=False)
