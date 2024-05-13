@@ -59,7 +59,8 @@ class CourseList(ListAPIView, CreateAPIView):
         # Allow only instructors to create a course
         if not HasInstructorProfile().has_permission(request, self):
             return Response(
-                {"detail": "You must have an instructor profile to create a course."},
+                {"detail": "You must have an instructor profile to create a course.",
+                 "request":request.user},
                 status=status.HTTP_403_FORBIDDEN
             )
 
@@ -68,7 +69,7 @@ class CourseList(ListAPIView, CreateAPIView):
 
 class CourseDetails(RetrieveUpdateDestroyAPIView):
     serializer_class = CourseSerializer
-    permission_classes = [IsInstructorOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,]
 
     def get_queryset(self):
         return Course.objects.all()

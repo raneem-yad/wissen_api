@@ -18,7 +18,7 @@ class CourseSerializer(serializers.ModelSerializer):
     category = serializers.ReadOnlyField(source='course_category.name')  # one-to-many relationship
     category_id = serializers.ReadOnlyField(source='course_category.id')
     tags = TagsSerializer(many=True, read_only=True)  # many-to-many relationship
-    students = serializers.PrimaryKeyRelatedField(many=True, queryset=User.objects.all())
+    students = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     students_count = serializers.ReadOnlyField(source='students.count', read_only=True)
     students_names = serializers.StringRelatedField(many=True, read_only=True)
     student_id = serializers.SerializerMethodField()
