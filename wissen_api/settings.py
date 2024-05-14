@@ -104,15 +104,18 @@ INSTALLED_APPS = [
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
 DEBUG = 'DEVELOPMENT' in os.environ
-ALLOWED_HOSTS = [".herokuapp.com", "127.0.0.1", ".gitpod.io"]
+ALLOWED_HOSTS = [
+    os.environ.get('ALLOWED_HOST'),
+    'localhost', '127.0.0.1',".herokuapp.com"
+]
 
 
 # Application definition
 
 
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
     'corsheaders.middleware.CorsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
     "django.middleware.common.CommonMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -159,14 +162,25 @@ DATABASES = {"default": dj_database_url.parse(os.environ.get("DATABASE_URL"))}
 
 CSRF_TRUSTED_ORIGINS = ["https://*.herokuapp.com", "https://*.gitpod.io", "http://192.168.0.108/:3000"]
 if 'CLIENT_ORIGIN' in os.environ:
-     CORS_ALLOWED_ORIGINS = [
-         os.environ.get('CLIENT_ORIGIN'),  'http://192.168.0.108/:3000',
-     ]
-else:
+    CORS_ALLOWED_ORIGINS = [
+        os.environ.get('CLIENT_ORIGIN')
+    ]
+if 'CLIENT_ORIGIN_DEV' in os.environ:
     CORS_ALLOWED_ORIGINS = [
         os.environ.get('CLIENT_ORIGIN_DEV'),
         os.environ.get('CLIENT_ORIGIN')
     ]
+
+# if 'CLIENT_ORIGIN' in os.environ:
+#
+#      CORS_ALLOWED_ORIGINS = [
+#          os.environ.get('CLIENT_ORIGIN'),  'http://192.168.0.108/:3000',
+#      ]
+# else:
+#     CORS_ALLOWED_ORIGINS = [
+#         os.environ.get('CLIENT_ORIGIN_DEV'),
+#         os.environ.get('CLIENT_ORIGIN')
+#     ]
 
 CORS_ALLOW_CREDENTIALS = True
 if "test" in sys.argv:
