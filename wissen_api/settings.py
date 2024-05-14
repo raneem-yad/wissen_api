@@ -165,9 +165,14 @@ if 'CLIENT_ORIGIN' in os.environ:
 else:
      CORS_ALLOWED_ORIGIN_REGEXES = [
          r"^https://.*\.gitpod\.io$",
-        r'^http://localhost:3000$',
+         r'^http://localhost:3000$',
+         r'http://localhost:3000',
      ]
 
+
+
+
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 if "test" in sys.argv:
     DATABASES["default"]["ENGINE"] = "django.db.backends.sqlite3"
