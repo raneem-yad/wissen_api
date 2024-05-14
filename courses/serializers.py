@@ -13,6 +13,8 @@ from .models import Course, VideoContent
 
 
 class CourseSerializer(serializers.ModelSerializer):
+    level_label = serializers.SerializerMethodField()
+
     teacher = serializers.ReadOnlyField(source='teacher.username')  # one-to-one relationship
     is_course_owner = serializers.SerializerMethodField()
     teacher_id = serializers.ReadOnlyField(source='teacher.instructor.id')
@@ -23,7 +25,8 @@ class CourseSerializer(serializers.ModelSerializer):
     category_id = serializers.ReadOnlyField(source='course_category.id')
 
     tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tags.objects.all())
-    tags_details = serializers.ReadOnlyField(source='get_tags_details')
+    # tags_details = serializers.ReadOnlyField(source='get_tags_details')
+    tags_details = serializers.StringRelatedField(source='tags', many=True, read_only=True)
 
     students = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     students_count = serializers.ReadOnlyField(source='students.count', read_only=True)
@@ -36,6 +39,9 @@ class CourseSerializer(serializers.ModelSerializer):
 
     comments_count = serializers.SerializerMethodField()
     comments = serializers.SerializerMethodField()
+
+    def get_level_label(self, obj):
+        return obj.get_level_display()
 
     def get_is_course_owner(self, obj):
         request = self.context['request']
@@ -78,9 +84,9 @@ class CourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ['id', 'course_name', 'category', 'category_name', 'category_id', 'summery', 'level', 'description',
+        fields = ['id', 'course_name', 'category', 'category_name', 'category_id', 'summery', 'level','level_label',
                   'course_requirements', 'learning_goals', 'tags', 'tags_details', 'students', 'students_count',
-                  'students_names', 'student_id',
+                  'students_names', 'student_id',  'description',
                   'is_learner_enrolled_in_course', 'rating_value', 'rating_count', 'comments', 'comments_count',
                   'image', 'teacher', 'is_course_owner', 'teacher_id', 'teacher_image', 'posted_date',
                   'updated_date']
