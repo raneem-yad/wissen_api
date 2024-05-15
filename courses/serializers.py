@@ -95,5 +95,5 @@ class CourseSerializer(serializers.ModelSerializer):
 class VideoContentSerializer(serializers.ModelSerializer):
     class Meta:
         model = VideoContent
-        fields = ['id', 'course', 'title', 'description', 'video', 'duration',
+        fields = ['id', 'video_contents', 'title', 'description', 'video', 'duration',
                   'is_completed', 'created_date', 'updated_date']

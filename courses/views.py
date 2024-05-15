@@ -5,7 +5,7 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status, permissions, filters
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView, get_object_or_404
 
 from category.models import Category
 from instructor.models import Instructor
@@ -13,11 +13,14 @@ from learner.models import Learner
 from tags.models import Tags
 from tags.serializers import TagsSerializer
 from wissen_api.permissions import HasInstructorProfile, IsInstructorOrReadOnly
-from .models import Course
-from .serializers import CourseSerializer
+from .models import Course, VideoContent
+from .serializers import CourseSerializer, VideoContentSerializer
 
 
 class CourseList(ListAPIView, CreateAPIView):
+    """
+        API endpoint to retrieve all courses.
+        """
     serializer_class = CourseSerializer
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly,
@@ -71,6 +74,9 @@ class CourseList(ListAPIView, CreateAPIView):
 
 
 class CourseDetails(RetrieveUpdateDestroyAPIView):
+    """
+        API endpoint to retrieve all details for a specific course.
+        """
     serializer_class = CourseSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
 
@@ -105,6 +111,9 @@ class CourseDetails(RetrieveUpdateDestroyAPIView):
 
 
 class EnrollStudentAPIView(APIView):
+    """
+        API endpoint to enroll in course.
+        """
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly,
     ]
@@ -127,6 +136,9 @@ class EnrollStudentAPIView(APIView):
 
 
 class CourseByCategoryList(ListAPIView):
+    """
+        API endpoint to retrieve all courses for a specific category.
+        """
     serializer_class = CourseSerializer
 
     def get_queryset(self):
@@ -142,6 +154,9 @@ class CourseByCategoryList(ListAPIView):
 
 
 class CourseByInstructorList(ListAPIView):
+    """
+        API endpoint to retrieve all courses for a specific instructor.
+        """
     serializer_class = CourseSerializer
 
     def get_queryset(self):
@@ -160,6 +175,9 @@ class CourseByInstructorList(ListAPIView):
 
 
 class TagsByCourseList(ListAPIView):
+    """
+        API endpoint to retrieve all tags for a specific course.
+        """
     serializer_class = TagsSerializer
 
     def get_queryset(self):
@@ -172,3 +190,39 @@ class TagsByCourseList(ListAPIView):
                 return Tags.objects.none()
         else:
             return Tags.objects.none()
+
+
+class CourseVideoListView(APIView):
+    """
+    API endpoint to retrieve all videos for a specific course.
+    """
+
+    def get(self, request, course_id):
+        course = get_object_or_404(Course, pk=course_id)
+        videos = VideoContent.objects.filter(video_contents=course)
+        serializer = VideoContentSerializer(videos, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, course_id):
+        serializer = VideoContentSerializer(data=request.data)
+        if serializer.is_valid():
+            course = get_object_or_404(Course, pk=course_id)
+            serializer.validated_data['course'] = course
+            video_content = serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CourseVideoDetailView(APIView):
+    def put(self, request, course_id, video_id):
+        video_content = get_object_or_404(VideoContent, pk=video_id)
+        serializer = VideoContentSerializer(video_content, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, course_id, video_id):
+        video_content = get_object_or_404(VideoContent, pk=video_id)
+        video_content.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
