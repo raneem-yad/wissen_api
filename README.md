@@ -157,7 +157,16 @@ The backend is powered by a robust stack that ensures efficiency and scalability
 
 ## API Documentation
 The project is seamlessly integrated with Swagger API, offering comprehensive details for each API endpoint. It provides examples, detailed information, and an option to test the endpoints directly.
-[add link here ]()
+How to use it ? 
+
+1. scroll down to dj-rest-auth --> POST -->/dj-rest-auth/login/.
+2. click on the api to expanded the press on try it out.
+3. add you username and password and delete the email if you don't have.
+4. press execute then refresh the page you will notice your username has been added as login user.
+
+in that way we can execute any other API Considring if the user has the permission to access the API endpoint.
+
+[deployed link](https://wissen-api-61cc6e37e2b8.herokuapp.com/)
 ![swagger](./readme/swagger.png)
 
 

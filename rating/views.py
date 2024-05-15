@@ -1,6 +1,6 @@
 from rest_framework import generics, permissions
 
-from wissen_api.permissions import IsOwnerOrReadOnly
+from wissen_api.permissions import IsRatingOwnerOrReadOnly
 from .models import Rating
 from .serializers import RatingSerializer
 
@@ -21,6 +21,6 @@ class RatingDetail(generics.RetrieveDestroyAPIView):
     """
     Retrieve a like or delete it by id if you own it.
     """
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsRatingOwnerOrReadOnly]
     serializer_class = RatingSerializer
     queryset = Rating.objects.all()
