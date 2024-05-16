@@ -39,6 +39,6 @@ class InstructorSerializer(serializers.ModelSerializer):
         model = Instructor
         fields = ['id', 'owner', 'expertise', 'job_title',
                   'rating_value', 'rating_count','course_count',
-                  'learner_count', 'image',
+                  'learner_count', 'image','bio',
                   'website_link', 'linkedin_link', 'is_owner',
                   'created_date', 'updated_date']
