@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Course, VideoContent
+from .models import Course, VideoContent, Enrollment
 
 
 @admin.register(Course)
@@ -12,3 +12,8 @@ class CourseAdmin(admin.ModelAdmin):
 @admin.register(VideoContent)
 class VideoContentAdmin(admin.ModelAdmin):
     list_display = ("video", "title", "duration")
+
+
+@admin.register(Enrollment)
+class EnrollmentAdmin(admin.ModelAdmin):
+    list_display = ("course", "user", "enrolled_date")

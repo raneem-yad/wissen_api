@@ -1,6 +1,7 @@
 from django.db.models import Avg, Count
 from rest_framework import serializers
 
+from courses.models import Course, Enrollment
 from expertise.serializers import ExpertiseSerializer
 from instructor_rating.models import InstructorRating
 from .models import Instructor
@@ -12,6 +13,8 @@ class InstructorSerializer(serializers.ModelSerializer):
     expertise = ExpertiseSerializer(many=True, read_only=True)
     rating_value = serializers.SerializerMethodField()
     rating_count = serializers.SerializerMethodField()
+    course_count = serializers.SerializerMethodField()
+    learner_count = serializers.SerializerMethodField()
 
     def get_is_owner(self, obj):
         request = self.context['request']
@@ -23,9 +26,19 @@ class InstructorSerializer(serializers.ModelSerializer):
     def get_rating_count(self, obj):
         return InstructorRating.objects.filter(teacher=obj).count()
 
+    def get_course_count(self, obj):
+        return Course.objects.filter(teacher=obj.owner).count()
+
+    def get_learner_count(self, obj):
+        # Get the courses taught by the instructor
+        courses = Course.objects.filter(teacher=obj.owner)
+        # Count the total number of unique learners enrolled in these courses
+        return Enrollment.objects.filter(course__in=courses).values('user').distinct().count()
+
     class Meta:
         model = Instructor
         fields = ['id', 'owner', 'expertise', 'job_title',
-                  'rating_value', 'rating_count',
+                  'rating_value', 'rating_count','course_count',
+                  'learner_count', 'image',
                   'website_link', 'linkedin_link', 'is_owner',
                   'created_date', 'updated_date']
