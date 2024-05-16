@@ -146,11 +146,14 @@ class CourseByCategoryList(ListAPIView):
     def get_queryset(self):
         category_id = self.kwargs.get('category_id')
         if category_id is not None:
-            try:
-                category = Category.objects.get(pk=category_id)
-                return category.course_set.all()  # Assuming you have a reverse relation from Category to Course
-            except Category.DoesNotExist:
-                return Course.objects.none()
+            if category_id == 0:
+                return Course.objects.all()
+            else:
+                try:
+                    category = Category.objects.get(pk=category_id)
+                    return category.course_set.all()
+                except Category.DoesNotExist:
+                    return Course.objects.none()
         else:
             return Course.objects.none()
 
@@ -173,7 +176,7 @@ class CourseByInstructorList(ListAPIView):
             except Instructor.DoesNotExist:
                 return Course.objects.none()
         else:
-            return Course.objects.none()  # Return empty queryset if no instructor_id is provided
+            return Course.objects.none()
 
 
 class TagsByCourseList(ListAPIView):
@@ -236,11 +239,8 @@ class TopThreeCoursesView(APIView):
         top_rated_course_ids = Rating.objects.values('course').annotate(avg_rating=Avg('rating')).order_by(
             '-avg_rating')[:3].values_list('course', flat=True)
 
-        # Retrieve the top-rated courses
         top_rated_courses = Course.objects.filter(id__in=top_rated_course_ids)
 
-        # Serialize the data using CourseSerializer
         serialized_courses = CourseSerializer(top_rated_courses, many=True, context={'request': request}).data
 
-        # Return a JsonResponse with the serialized data
         return Response(serialized_courses)
