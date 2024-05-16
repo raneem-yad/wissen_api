@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.db.models import Avg
 from django.http import Http404, QueryDict
 from django.utils.datastructures import MultiValueDict
 from drf_yasg.utils import swagger_auto_schema
@@ -10,6 +11,7 @@ from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDe
 from category.models import Category
 from instructor.models import Instructor
 from learner.models import Learner
+from rating.models import Rating
 from tags.models import Tags
 from tags.serializers import TagsSerializer
 from wissen_api.permissions import HasInstructorProfile, IsInstructorOrReadOnly
@@ -226,3 +228,19 @@ class CourseVideoDetailView(APIView):
         video_content = get_object_or_404(VideoContent, pk=video_id)
         video_content.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class TopThreeCoursesView(APIView):
+    def get(self, request):
+        # Query the Rating model to get the top-rated courses
+        top_rated_course_ids = Rating.objects.values('course').annotate(avg_rating=Avg('rating')).order_by(
+            '-avg_rating')[:3].values_list('course', flat=True)
+
+        # Retrieve the top-rated courses
+        top_rated_courses = Course.objects.filter(id__in=top_rated_course_ids)
+
+        # Serialize the data using CourseSerializer
+        serialized_courses = CourseSerializer(top_rated_courses, many=True, context={'request': request}).data
+
+        # Return a JsonResponse with the serialized data
+        return Response(serialized_courses)
