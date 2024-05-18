@@ -4,22 +4,12 @@ from rest_framework import serializers
 
 from instructor.models import Instructor
 from learner.models import Learner
-from django.conf import settings
-
-
-class CurrentUserSerializer(UserDetailsSerializer):
-    profile_id = serializers.ReadOnlyField(source='learner.id')
-    profile_image = serializers.ReadOnlyField(source='learner.image.url')
-
-    class Meta(UserDetailsSerializer.Meta):
-        fields = UserDetailsSerializer.Meta.fields + (
-            'profile_id', 'profile_image'
-        )
 
 
 class CustomUserDetailsSerializer(UserDetailsSerializer):
     profile_image = serializers.SerializerMethodField()
     profile_id = serializers.SerializerMethodField()
+    profile_type = serializers.SerializerMethodField()
 
     def get_profile_image(self, user):
         if hasattr(user, 'learner') and user.learner.image:
@@ -37,23 +27,19 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
         else:
             return None
 
+    def get_profile_type(self, user):
+        if hasattr(user, 'learner'):
+            return 'learner'
+        elif hasattr(user, 'instructor'):
+            return 'instructor'
+        else:
+            return None
+
     class Meta(UserDetailsSerializer.Meta):
         fields = UserDetailsSerializer.Meta.fields + (
-            'profile_id', 'profile_image'
+            'profile_id', 'profile_image', 'profile_type'
         )
 
-
-# class MyCustomRegistrationSerializer(RegisterSerializer):
-#     CHOICES = (
-#         ('I', 'Instructor'),
-#         ('S', 'Student'),
-#     )
-#     role = serializers.ChoiceField(max_length=1, choices=CHOICES)
-#
-#     def get_cleaned_data(self):
-#         data_dict = super().get_cleaned_data()
-#         data_dict['role'] = self.validated_data.get('role', '')
-#         return data_dict
 
 class CustomRegisterSerializer(RegisterSerializer):
     is_instructor = serializers.BooleanField()
