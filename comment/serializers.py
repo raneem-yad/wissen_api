@@ -10,8 +10,8 @@ class CommentSerializer(serializers.ModelSerializer):
     """
     owner = serializers.ReadOnlyField(source='owner.username')
     is_owner = serializers.SerializerMethodField()
-    # profile_id = serializers.ReadOnlyField(source='owner.profile.id')
-    # profile_image = serializers.ReadOnlyField(source='owner.profile.image.url')
+    profile_id = serializers.SerializerMethodField()
+    profile_image = serializers.SerializerMethodField()
     created_at = serializers.SerializerMethodField()
     updated_at = serializers.SerializerMethodField()
 
@@ -25,10 +25,26 @@ class CommentSerializer(serializers.ModelSerializer):
     def get_updated_at(self, obj):
         return naturaltime(obj.updated_at)
 
+    def get_profile_image(self,obj):
+        if hasattr(obj.owner, 'learner') and obj.owner.learner.image:
+            return str(obj.owner.learner.image.url)
+        elif hasattr(obj.owner, 'instructor') and obj.owner.instructor.image:
+            return str(obj.owner.instructor.image.url)
+        else:
+            return None
+
+    def get_profile_id(self, obj):
+        if hasattr(obj.owner, 'learner'):
+            return obj.owner.learner.id
+        elif hasattr(obj.owner, 'instructor'):
+            return obj.owner.instructor.id
+        else:
+            return None
+
     class Meta:
         model = Comment
         fields = [
-            'id', 'owner', 'is_owner', 'created_at', 'updated_at',
+            'id', 'owner','profile_id', 'profile_image', 'is_owner', 'created_at', 'updated_at',
             'course', 'created_at', 'updated_at', 'content'
         ]
 

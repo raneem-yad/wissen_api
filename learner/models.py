@@ -6,7 +6,7 @@ from django_resized import ResizedImageField
 
 
 class Learner(models.Model):
-    owner = models.OneToOneField(User, on_delete=models.CASCADE , related_name='learner_profile')
+    owner = models.OneToOneField(User, on_delete=models.CASCADE )
     full_name = models.CharField(max_length=200, null=False, blank=False)
     bio = models.TextField(null=True, blank=True)
     image = ResizedImageField(
