@@ -160,7 +160,7 @@ SITE_ID = 1
 # }
 DATABASES = {"default": dj_database_url.parse(os.environ.get("DATABASE_URL"))}
 
-CSRF_TRUSTED_ORIGINS = ["https://*.herokuapp.com", "https://*.gitpod.io", "http://192.168.0.108/:3000"]
+CSRF_TRUSTED_ORIGINS = ["https://*.herokuapp.com", "https://*.gitpod.io", "http://192.168.0.108/:3000" ,"http://127.0.0.1:8000/"]
 if 'CLIENT_ORIGIN' in os.environ:
     CORS_ALLOWED_ORIGINS = [
         os.environ.get('CLIENT_ORIGIN')

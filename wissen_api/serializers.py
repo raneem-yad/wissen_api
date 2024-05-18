@@ -23,9 +23,9 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
 
     def get_profile_image(self, user):
         if hasattr(user, 'learner') and user.learner.image:
-            return settings.MEDIA_URL + str(user.learner.image)
+            return str(user.learner.image.url)
         elif hasattr(user, 'instructor') and user.instructor.image:
-            return settings.MEDIA_URL + str(user.instructor.image)
+            return str(user.instructor.image.url)
         else:
             return None
 

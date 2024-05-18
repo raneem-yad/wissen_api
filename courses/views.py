@@ -97,7 +97,7 @@ class CourseDetails(RetrieveUpdateDestroyAPIView):
         # Allow only instructors to update a course
         if not HasInstructorProfile().has_permission(request, self):
             return Response(
-                {"detail": "You must have an instructor profile to create a course."},
+                {"detail": "You must be the course owner in order to update the course data."},
                 status=status.HTTP_403_FORBIDDEN
             )
         return super().put(request, *args, **kwargs)
@@ -106,7 +106,7 @@ class CourseDetails(RetrieveUpdateDestroyAPIView):
         # Allow only instructors to delete a course
         if not HasInstructorProfile().has_permission(request, self):
             return Response(
-                {"detail": "You must have an instructor profile to create a course."},
+                {"detail": "You must be the course owner in order to delete the course data."},
                 status=status.HTTP_403_FORBIDDEN
             )
         return super().delete(request, *args, **kwargs)
