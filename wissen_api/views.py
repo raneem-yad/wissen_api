@@ -4,11 +4,8 @@ from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework import status
 
-
 from instructor.models import Instructor
-from instructor.serializers import InstructorSerializer
 from learner.models import Learner
-from learner.serializers import LearnerSerializer
 from .serializers import CustomRegisterSerializer, CustomUserDetailsSerializer, ProfileSerializer
 from .settings import (
     JWT_AUTH_COOKIE, JWT_AUTH_REFRESH_COOKIE, JWT_AUTH_SAMESITE,
@@ -52,30 +49,6 @@ class CustomRegisterView(RegisterView):
     serializer_class = CustomRegisterSerializer
 
 
-@api_view(['GET'])
-def get_profile(request, profile_id):
-    learner = Learner.objects.filter(profile_id=profile_id).first()
-    instructor = Instructor.objects.filter(profile_id=profile_id).first()
-
-    if learner:
-        # Only learner exists
-        profile_data = {
-            'role': 'learner',
-            'profile': LearnerSerializer(learner).data
-        }
-        return Response(ProfileSerializer(profile_data).data, status=status.HTTP_200_OK)
-    elif instructor:
-        # Only instructor exists
-        profile_data = {
-            'role': 'instructor',
-            'profile': InstructorSerializer(instructor).data
-        }
-        return Response(ProfileSerializer(profile_data).data, status=status.HTTP_200_OK)
-    else:
-        # Profile not found
-        return Response({'error': 'Profile not found'}, status=status.HTTP_404_NOT_FOUND)
-
-
 class ProfileRetrieveAPIView(RetrieveAPIView):
     lookup_field = 'profile_id'
 
@@ -105,5 +78,3 @@ class ProfileRetrieveAPIView(RetrieveAPIView):
 
         # Profile not found
         return Response({'error': 'Profile not found'}, status=status.HTTP_404_NOT_FOUND)
-
-

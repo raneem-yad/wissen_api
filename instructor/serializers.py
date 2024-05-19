@@ -12,7 +12,7 @@ class InstructorSerializer(serializers.ModelSerializer):
     Serializer for the Instructor model.
     """
     owner = serializers.ReadOnlyField(source='owner.username')  # one-to-one relationship
-    is_owner = serializers.SerializerMethodField()
+    # is_owner = serializers.SerializerMethodField()
     expertise = ExpertiseSerializer(many=True, read_only=True)
     rating_value = serializers.SerializerMethodField()
     profile_id = serializers.ReadOnlyField()
@@ -20,9 +20,11 @@ class InstructorSerializer(serializers.ModelSerializer):
     course_count = serializers.SerializerMethodField()
     learner_count = serializers.SerializerMethodField()
 
-    def get_is_owner(self, obj):
-        request = self.context['request']
-        return request.user == obj.owner
+    # def get_is_owner(self, obj):
+    #     if self.context['request'] :
+    #         request = self.context['request']
+    #         return request.user == obj.owner
+
 
     def get_rating_value(self, obj):
         return InstructorRating.objects.filter(teacher=obj).aggregate(avg_rating=Avg('rating'))['avg_rating']
@@ -44,5 +46,5 @@ class InstructorSerializer(serializers.ModelSerializer):
         fields = ['id', 'owner','profile_id', 'expertise', 'job_title',
                   'rating_value', 'rating_count','course_count',
                   'learner_count', 'image','bio',
-                  'website_link', 'linkedin_link', 'is_owner',
+                  'website_link', 'linkedin_link',
                   'created_date', 'updated_date']
