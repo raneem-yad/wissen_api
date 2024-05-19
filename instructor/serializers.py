@@ -8,10 +8,14 @@ from .models import Instructor
 
 
 class InstructorSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Instructor model.
+    """
     owner = serializers.ReadOnlyField(source='owner.username')  # one-to-one relationship
     is_owner = serializers.SerializerMethodField()
     expertise = ExpertiseSerializer(many=True, read_only=True)
     rating_value = serializers.SerializerMethodField()
+    profile_id = serializers.ReadOnlyField()
     rating_count = serializers.SerializerMethodField()
     course_count = serializers.SerializerMethodField()
     learner_count = serializers.SerializerMethodField()
@@ -37,7 +41,7 @@ class InstructorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Instructor
-        fields = ['id', 'owner', 'expertise', 'job_title',
+        fields = ['id', 'owner','profile_id', 'expertise', 'job_title',
                   'rating_value', 'rating_count','course_count',
                   'learner_count', 'image','bio',
                   'website_link', 'linkedin_link', 'is_owner',

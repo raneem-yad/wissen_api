@@ -7,7 +7,6 @@ from rest_framework.views import APIView
 
 from expertise.models import Expertise
 from expertise.serializers import ExpertiseSerializer
-from instructor_rating.models import InstructorRating
 from .models import Instructor
 from .serializers import InstructorSerializer
 from wissen_api.permissions import IsOwnerOrReadOnly
