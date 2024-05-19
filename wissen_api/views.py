@@ -60,7 +60,7 @@ class ProfileRetrieveAPIView(RetrieveAPIView):
                 'role': 'learner',
                 'profile': learner
             }
-            serializer = ProfileSerializer(profile_data)
+            serializer = ProfileSerializer(profile_data,context={'request': request})
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Learner.DoesNotExist:
             pass
@@ -71,7 +71,7 @@ class ProfileRetrieveAPIView(RetrieveAPIView):
                 'role': 'instructor',
                 'profile': instructor
             }
-            serializer = ProfileSerializer(profile_data)
+            serializer = ProfileSerializer(profile_data,context={'request': request})
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Instructor.DoesNotExist:
             pass

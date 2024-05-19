@@ -82,8 +82,13 @@ class ProfileSerializer(serializers.Serializer):
     profile = serializers.SerializerMethodField()
 
     def get_profile(self, obj):
+        request = self.context.get('request')
         if obj['role'] == 'learner':
-            return LearnerSerializer(obj['profile']).data
+            learner_instance = obj['profile']
+            learner_serializer = LearnerSerializer(learner_instance, context={'request': request})
+            return learner_serializer.data
         elif obj['role'] == 'instructor':
-            return InstructorSerializer(obj['profile']).data
+            instructor_instance = obj['profile']
+            instructor_serializer = InstructorSerializer(instructor_instance, context={'request': request})
+            return instructor_serializer.data
         return None
