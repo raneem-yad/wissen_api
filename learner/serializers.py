@@ -24,6 +24,7 @@ class LearnerSerializer(serializers.ModelSerializer):
     - get_enrolled_courses: Retrieves and serializes the courses the learner is enrolled in.
     - get_enrolled_courses_count: Retrieves the count of courses the learner is enrolled in.
     """
+    owner_username = serializers.ReadOnlyField(source='owner.username')
     enrolled_courses = serializers.SerializerMethodField()
     enrolled_courses_count = serializers.SerializerMethodField()
     profile_id = serializers.ReadOnlyField()
@@ -39,5 +40,5 @@ class LearnerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Learner
-        fields = ['id', 'owner', 'full_name', 'bio', 'image','profile_id', 'created_date', 'updated_date', 'enrolled_courses_count',
+        fields = ['id', 'owner','owner_username', 'full_name', 'bio', 'image','profile_id', 'created_date', 'updated_date', 'enrolled_courses_count',
                   'enrolled_courses']
