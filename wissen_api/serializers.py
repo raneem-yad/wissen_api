@@ -2,8 +2,11 @@ from dj_rest_auth.registration.serializers import RegisterSerializer
 from dj_rest_auth.serializers import UserDetailsSerializer
 from rest_framework import serializers
 
+
 from instructor.models import Instructor
+from instructor.serializers import InstructorSerializer
 from learner.models import Learner
+from learner.serializers import LearnerSerializer
 
 
 class CustomUserDetailsSerializer(UserDetailsSerializer):
@@ -21,9 +24,9 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
 
     def get_profile_id(self, user):
         if hasattr(user, 'learner'):
-            return user.learner.id
+            return user.learner.profile_id
         elif hasattr(user, 'instructor'):
-            return user.instructor.id
+            return user.instructor.profile_id
         else:
             return None
 
@@ -72,3 +75,15 @@ class CustomRegisterSerializer(RegisterSerializer):
         else:
             Learner.objects.create(owner=user, full_name=full_name)
             print("Learner profile created.")
+
+
+class ProfileSerializer(serializers.Serializer):
+    role = serializers.CharField()
+    profile = serializers.SerializerMethodField()
+
+    def get_profile(self, obj):
+        if obj['role'] == 'learner':
+            return LearnerSerializer(obj['profile']).data
+        elif obj['role'] == 'instructor':
+            return InstructorSerializer(obj['profile']).data
+        return None

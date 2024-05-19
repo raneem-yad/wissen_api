@@ -21,7 +21,7 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-from wissen_api.views import logout_route, CustomRegisterView, user_detail
+from wissen_api.views import logout_route, CustomRegisterView, get_profile, ProfileRetrieveAPIView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -46,7 +46,8 @@ urlpatterns = [
     # ),
     path("djrichtextfield/", include("djrichtextfield.urls")),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('users/<int:user_id>/', user_detail, name='user-detail'),
+    path('users/<str:profile_id>/', get_profile),
+    path('new_users/<str:profile_id>/', ProfileRetrieveAPIView.as_view()),
     path("courses/", include('courses.urls')),
     path("instructors/", include('instructor.urls')),
     path("categories/", include('category.urls')),
