@@ -35,9 +35,9 @@ class CommentSerializer(serializers.ModelSerializer):
 
     def get_profile_id(self, obj):
         if hasattr(obj.owner, 'learner'):
-            return obj.owner.learner.id
+            return obj.owner.learner.profile_id
         elif hasattr(obj.owner, 'instructor'):
-            return obj.owner.instructor.id
+            return obj.owner.instructor.profile_id
         else:
             return None
 

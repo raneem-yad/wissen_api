@@ -17,7 +17,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
     teacher = serializers.ReadOnlyField(source='teacher.username')  # one-to-one relationship
     is_course_owner = serializers.SerializerMethodField()
-    teacher_id = serializers.ReadOnlyField(source='teacher.instructor.id')
+    teacher_profile_id = serializers.ReadOnlyField(source='teacher.instructor.profile_id')
     teacher_image = serializers.ReadOnlyField(source='teacher.instructor.image.url')
 
     category = serializers.PrimaryKeyRelatedField(source='course_category', queryset=Category.objects.all())
@@ -88,7 +88,7 @@ class CourseSerializer(serializers.ModelSerializer):
                   'course_requirements', 'learning_goals', 'tags', 'tags_details', 'students', 'students_count',
                   'students_names', 'student_id',  'description',
                   'is_learner_enrolled_in_course', 'rating_value', 'rating_count', 'comments', 'comments_count',
-                  'image', 'teacher', 'is_course_owner', 'teacher_id', 'teacher_image', 'posted_date',
+                  'image', 'teacher', 'is_course_owner', 'teacher_profile_id', 'teacher_image', 'posted_date',
                   'updated_date']
 
 
