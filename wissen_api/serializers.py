@@ -40,7 +40,6 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
             'profile_id', 'profile_image', 'profile_type'
         )
 
-
 class CustomRegisterSerializer(RegisterSerializer):
     is_instructor = serializers.BooleanField()
     full_name = serializers.CharField()

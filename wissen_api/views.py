@@ -1,8 +1,9 @@
 from dj_rest_auth.registration.views import RegisterView
+from django.contrib.auth import get_user_model
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .serializers import CustomRegisterSerializer
+from .serializers import CustomRegisterSerializer, CustomUserDetailsSerializer
 from .settings import (
     JWT_AUTH_COOKIE, JWT_AUTH_REFRESH_COOKIE, JWT_AUTH_SAMESITE,
     JWT_AUTH_SECURE,
@@ -44,6 +45,14 @@ def logout_route(request):
 class CustomRegisterView(RegisterView):
     serializer_class = CustomRegisterSerializer
 
-    # def perform_create(self, serializer):
-    #     user = serializer.save(self.request)
-    #     serializer.custom_signup(self.request, user)
+
+@api_view(['GET'])
+def user_detail(request, user_id):
+    try:
+        user = get_user_model().objects.get(pk=user_id)
+    except get_user_model().DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    print(f"user has been successfully recieved ${user}")
+    serializer = CustomUserDetailsSerializer(user)
+    return Response(serializer.data)

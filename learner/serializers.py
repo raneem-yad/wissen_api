@@ -7,7 +7,6 @@ from .models import Learner
 class LearnerSerializer(serializers.ModelSerializer):
     enrolled_courses = serializers.SerializerMethodField()
     enrolled_courses_count = serializers.SerializerMethodField()
-    # courses_enrolled = CourseSerializer(many=True, read_only=True)
 
     def get_enrolled_courses(self, obj):
         enrolled_courses = obj.owner.courses_enrolled.all()
