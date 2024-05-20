@@ -29,7 +29,8 @@ class Migration(migrations.Migration):
                 (
                     "course",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="courses.course"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="courses.course",
                     ),
                 ),
                 (

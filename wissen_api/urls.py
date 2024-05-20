@@ -21,12 +21,16 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-from wissen_api.views import logout_route, CustomRegisterView, ProfileRetrieveAPIView
+from wissen_api.views import (
+    logout_route,
+    CustomRegisterView,
+    ProfileRetrieveAPIView,
+)
 
 schema_view = get_schema_view(
     openapi.Info(
         title="Wissen Website API",
-        default_version='v1',
+        default_version="v1",
         description="My Wissen Website API description",
         contact=openapi.Contact(email="ranoprog@gmail.com"),
     ),
@@ -36,25 +40,36 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path("api-auth/", include('rest_framework.urls')),
-    path('dj-rest-auth/logout/', logout_route),
-    path('dj-rest-auth/', include('dj_rest_auth.urls')),
-    path('dj-rest-auth/registration/', CustomRegisterView.as_view(), name='custom_register'),
+    path(
+        "",
+        schema_view.with_ui("swagger", cache_timeout=0),
+        name="schema-swagger-ui",
+    ),
+    path("api-auth/", include("rest_framework.urls")),
+    path("dj-rest-auth/logout/", logout_route),
+    path("dj-rest-auth/", include("dj_rest_auth.urls")),
+    path(
+        "dj-rest-auth/registration/",
+        CustomRegisterView.as_view(),
+        name="custom_register",
+    ),
     # path(
     #     'dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')
     # ),
     path("djrichtextfield/", include("djrichtextfield.urls")),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('users/<str:profile_id>/', ProfileRetrieveAPIView.as_view()),
-    path("courses/", include('courses.urls')),
-    path("instructors/", include('instructor.urls')),
-    path("categories/", include('category.urls')),
-    path("comments/", include('comment.urls')),
-    path("rating/", include('rating.urls')),
-    path("tags/", include('tags.urls')),
-    path("expertise/", include('expertise.urls')),
-    path("instructor-rating/", include('instructor_rating.urls')),
-    path("learners/", include('learner.urls')),
-
+    path(
+        "redoc/",
+        schema_view.with_ui("redoc", cache_timeout=0),
+        name="schema-redoc",
+    ),
+    path("users/<str:profile_id>/", ProfileRetrieveAPIView.as_view()),
+    path("courses/", include("courses.urls")),
+    path("instructors/", include("instructor.urls")),
+    path("categories/", include("category.urls")),
+    path("comments/", include("comment.urls")),
+    path("rating/", include("rating.urls")),
+    path("tags/", include("tags.urls")),
+    path("expertise/", include("expertise.urls")),
+    path("instructor-rating/", include("instructor_rating.urls")),
+    path("learners/", include("learner.urls")),
 ]

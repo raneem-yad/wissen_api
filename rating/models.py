@@ -6,8 +6,12 @@ from courses.models import Course
 
 
 class Rating(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="rater")
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="ratings")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="rater"
+    )
+    course = models.ForeignKey(
+        Course, on_delete=models.CASCADE, related_name="ratings"
+    )
     rating = models.IntegerField(choices=[(i, str(i)) for i in range(1, 6)])
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -15,7 +19,7 @@ class Rating(models.Model):
         return f"{self.course} - {self.user}: {self.rating} stars"
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ["-created_at"]
         unique_together = ("course", "user")
 
     @classmethod

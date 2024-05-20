@@ -14,6 +14,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="course",
             name="tags",
-            field=models.ManyToManyField(related_name="courses", to="tags.tags"),
+            field=models.ManyToManyField(
+                related_name="courses", to="tags.tags"
+            ),
         ),
     ]

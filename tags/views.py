@@ -16,6 +16,7 @@ class TagsDetail(generics.RetrieveDestroyAPIView):
     """
     Retrieve a like or delete it by id if you own it.
     """
+
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = TagsSerializer
     queryset = Tags.objects.all()
@@ -25,7 +26,7 @@ class CoursesByTagList(generics.ListAPIView):
     serializer_class = CourseSerializer
 
     def get_queryset(self):
-        tag_id = self.kwargs.get('pk')
+        tag_id = self.kwargs.get("pk")
         if tag_id is not None:
             try:
                 tag = Tags.objects.get(id=tag_id)

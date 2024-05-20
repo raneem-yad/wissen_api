@@ -30,7 +30,13 @@ class Migration(migrations.Migration):
                 (
                     "rating",
                     models.IntegerField(
-                        choices=[(1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5")]
+                        choices=[
+                            (1, "1"),
+                            (2, "2"),
+                            (3, "3"),
+                            (4, "4"),
+                            (5, "5"),
+                        ]
                     ),
                 ),
                 ("created_at", models.DateTimeField(auto_now_add=True)),

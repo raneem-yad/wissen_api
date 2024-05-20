@@ -17,8 +17,10 @@ class CategoryList(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         if not HasInstructorProfile().has_permission(request, self):
             return Response(
-                {"detail": "You must have an instructor profile to create a Category."},
-                status=status.HTTP_403_FORBIDDEN
+                {
+                    "detail": "You must have an instructor profile to create a Category."
+                },
+                status=status.HTTP_403_FORBIDDEN,
             )
         return super().post(request, *args, **kwargs)
 
@@ -29,7 +31,7 @@ class CategoryDetails(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_object(self):
-        pk = self.kwargs.get('pk')
+        pk = self.kwargs.get("pk")
         try:
             category = Category.objects.get(pk=pk)
             self.check_object_permissions(self.request, category)
@@ -41,15 +43,19 @@ class CategoryDetails(generics.RetrieveUpdateDestroyAPIView):
     def put(self, request, *args, **kwargs):
         if not HasInstructorProfile().has_permission(request, self):
             return Response(
-                {"detail": "You must have an instructor profile to create a Category."},
-                status=status.HTTP_403_FORBIDDEN
+                {
+                    "detail": "You must have an instructor profile to create a Category."
+                },
+                status=status.HTTP_403_FORBIDDEN,
             )
         return super().put(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
         if not HasInstructorProfile().has_permission(request, self):
             return Response(
-                {"detail": "You must have an instructor profile to create a Category."},
-                status=status.HTTP_403_FORBIDDEN
+                {
+                    "detail": "You must have an instructor profile to create a Category."
+                },
+                status=status.HTTP_403_FORBIDDEN,
             )
         return super().delete(request, *args, **kwargs)

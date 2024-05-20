@@ -9,6 +9,7 @@ class RatingList(generics.ListCreateAPIView):
     """
     List Ratings or create a rate if logged in.
     """
+
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = RatingSerializer
     queryset = Rating.objects.all()
@@ -21,6 +22,7 @@ class RatingDetail(generics.RetrieveDestroyAPIView):
     """
     Retrieve a like or delete it by id if you own it.
     """
+
     permission_classes = [IsRatingOwnerOrReadOnly]
     serializer_class = RatingSerializer
     queryset = Rating.objects.all()

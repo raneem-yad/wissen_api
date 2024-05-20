@@ -6,4 +6,4 @@ from .models import Tags
 class TagsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tags
-        fields = ['id', 'name']
+        fields = ["id", "name"]

@@ -16,14 +16,23 @@ class Course(models.Model):
     """
     Course model which represent Courses
     """
-    teacher = models.ForeignKey(User, on_delete=models.CASCADE,related_name='courses_taught')
+
+    teacher = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="courses_taught"
+    )
     course_category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    course_name = models.CharField(max_length=300, unique=True, null=False, blank=False)
-    tags = models.ManyToManyField(Tags, related_name='courses')
-    students = models.ManyToManyField(User, related_name='courses_enrolled',blank=True,null=True)
+    course_name = models.CharField(
+        max_length=300, unique=True, null=False, blank=False
+    )
+    tags = models.ManyToManyField(Tags, related_name="courses")
+    students = models.ManyToManyField(
+        User, related_name="courses_enrolled", blank=True, null=True
+    )
     summery = models.CharField(max_length=200)
     description = models.CharField(max_length=500, null=False, blank=False)
-    course_requirements = RichTextField(max_length=10000, null=False, blank=False)
+    course_requirements = RichTextField(
+        max_length=10000, null=False, blank=False
+    )
     learning_goals = RichTextField(max_length=10000, null=False, blank=False)
     level = models.IntegerField(choices=LEVEL, default=0)
     image = ResizedImageField(
@@ -46,11 +55,17 @@ class Course(models.Model):
 
 
 class VideoContent(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, name='video_contents')
+    course = models.ForeignKey(
+        Course, on_delete=models.CASCADE, name="video_contents"
+    )
     title = models.CharField(max_length=255)
     description = models.TextField()
-    video = models.FileField(upload_to='videos/', blank=True, storage=VideoMediaCloudinaryStorage(),
-                              validators=[validate_video])
+    video = models.FileField(
+        upload_to="videos/",
+        blank=True,
+        storage=VideoMediaCloudinaryStorage(),
+        validators=[validate_video],
+    )
     duration = models.IntegerField()  # refer to minutes as video duration
     is_completed = models.BooleanField(default=False)
     created_date = models.DateField(auto_now_add=True)

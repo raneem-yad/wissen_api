@@ -14,6 +14,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="learner",
             name="profile_id",
-            field=models.CharField(default=uuid.uuid4, editable=False, max_length=255 ),
+            field=models.CharField(
+                default=uuid.uuid4, editable=False, max_length=255
+            ),
         ),
     ]

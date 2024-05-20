@@ -15,21 +15,37 @@ from .models import Course, VideoContent
 class CourseSerializer(serializers.ModelSerializer):
     level_label = serializers.SerializerMethodField()
 
-    teacher = serializers.ReadOnlyField(source='teacher.username')  # one-to-one relationship
+    teacher = serializers.ReadOnlyField(
+        source="teacher.username"
+    )  # one-to-one relationship
     is_course_owner = serializers.SerializerMethodField()
-    teacher_profile_id = serializers.ReadOnlyField(source='teacher.instructor.profile_id')
-    teacher_image = serializers.ReadOnlyField(source='teacher.instructor.image.url')
+    teacher_profile_id = serializers.ReadOnlyField(
+        source="teacher.instructor.profile_id"
+    )
+    teacher_image = serializers.ReadOnlyField(
+        source="teacher.instructor.image.url"
+    )
 
-    category = serializers.PrimaryKeyRelatedField(source='course_category', queryset=Category.objects.all())
-    category_name = serializers.ReadOnlyField(source='course_category.name')  # one-to-many relationship
-    category_id = serializers.ReadOnlyField(source='course_category.id')
+    category = serializers.PrimaryKeyRelatedField(
+        source="course_category", queryset=Category.objects.all()
+    )
+    category_name = serializers.ReadOnlyField(
+        source="course_category.name"
+    )  # one-to-many relationship
+    category_id = serializers.ReadOnlyField(source="course_category.id")
 
-    tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tags.objects.all())
+    tags = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=Tags.objects.all()
+    )
     # tags_details = serializers.ReadOnlyField(source='get_tags_details')
-    tags_details = serializers.StringRelatedField(source='tags', many=True, read_only=True)
+    tags_details = serializers.StringRelatedField(
+        source="tags", many=True, read_only=True
+    )
 
     students = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    students_count = serializers.ReadOnlyField(source='students.count', read_only=True)
+    students_count = serializers.ReadOnlyField(
+        source="students.count", read_only=True
+    )
     students_names = serializers.StringRelatedField(many=True, read_only=True)
     student_id = serializers.SerializerMethodField()
     is_learner_enrolled_in_course = serializers.SerializerMethodField()
@@ -44,11 +60,11 @@ class CourseSerializer(serializers.ModelSerializer):
         return obj.get_level_display()
 
     def get_is_course_owner(self, obj):
-        request = self.context['request']
+        request = self.context["request"]
         return request.user == obj.teacher
 
     def get_student_id(self, obj):
-        request = self.context['request']
+        request = self.context["request"]
         if request and request.user.is_authenticated:
             learner = Learner.objects.filter(owner=request.user).first()
             if learner:
@@ -57,7 +73,7 @@ class CourseSerializer(serializers.ModelSerializer):
         return None
 
     def get_is_learner_enrolled_in_course(self, obj):
-        request = self.context['request']
+        request = self.context["request"]
         if request and request.user.is_authenticated:
             learner = Learner.objects.filter(owner=request.user).first()
             learners = Learner.objects.filter(owner__in=obj.students.all())
@@ -67,33 +83,81 @@ class CourseSerializer(serializers.ModelSerializer):
 
     def get_rating_value(self, obj):
         # Calculate average rating for the course
-        return Rating.objects.filter(course=obj).aggregate(Avg("rating"))["rating__avg"] or 0
+        return (
+            Rating.objects.filter(course=obj).aggregate(Avg("rating"))[
+                "rating__avg"
+            ]
+            or 0
+        )
 
     def get_rating_count(self, obj):
         # Count the number of ratings for the course
-        return Rating.objects.filter(course=obj).values('user').distinct().count()
+        return (
+            Rating.objects.filter(course=obj).values("user").distinct().count()
+        )
 
     def get_comments_count(self, obj):
-        comments_count = Comment.objects.filter(course=obj).values('owner').distinct().count()
+        comments_count = (
+            Comment.objects.filter(course=obj)
+            .values("owner")
+            .distinct()
+            .count()
+        )
         return comments_count
 
     def get_comments(self, obj):
         comments_qs = Comment.objects.filter(course=obj)
-        comments_serializer = CommentSerializer(comments_qs, many=True, context=self.context)
+        comments_serializer = CommentSerializer(
+            comments_qs, many=True, context=self.context
+        )
         return comments_serializer.data
 
     class Meta:
         model = Course
-        fields = ['id', 'course_name', 'category', 'category_name', 'category_id', 'summery', 'level','level_label',
-                  'course_requirements', 'learning_goals', 'tags', 'tags_details', 'students', 'students_count',
-                  'students_names', 'student_id',  'description',
-                  'is_learner_enrolled_in_course', 'rating_value', 'rating_count', 'comments', 'comments_count',
-                  'image', 'teacher', 'is_course_owner', 'teacher_profile_id', 'teacher_image', 'posted_date',
-                  'updated_date']
+        fields = [
+            "id",
+            "course_name",
+            "category",
+            "category_name",
+            "category_id",
+            "summery",
+            "level",
+            "level_label",
+            "course_requirements",
+            "learning_goals",
+            "tags",
+            "tags_details",
+            "students",
+            "students_count",
+            "students_names",
+            "student_id",
+            "description",
+            "is_learner_enrolled_in_course",
+            "rating_value",
+            "rating_count",
+            "comments",
+            "comments_count",
+            "image",
+            "teacher",
+            "is_course_owner",
+            "teacher_profile_id",
+            "teacher_image",
+            "posted_date",
+            "updated_date",
+        ]
 
 
 class VideoContentSerializer(serializers.ModelSerializer):
     class Meta:
         model = VideoContent
-        fields = ['id', 'video_contents', 'title', 'description', 'video', 'duration',
-                  'is_completed', 'created_date', 'updated_date']
+        fields = [
+            "id",
+            "video_contents",
+            "title",
+            "description",
+            "video",
+            "duration",
+            "is_completed",
+            "created_date",
+            "updated_date",
+        ]

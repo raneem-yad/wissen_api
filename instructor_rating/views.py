@@ -9,6 +9,7 @@ class InstructorRatingList(generics.ListCreateAPIView):
     """
     List Ratings or create a rate if logged in.
     """
+
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = InstructorRatingSerializer
     queryset = InstructorRating.objects.all()
@@ -21,6 +22,7 @@ class InstructorRatingDetail(generics.RetrieveDestroyAPIView):
     """
     Retrieve a like or delete it by id if you own it.
     """
+
     permission_classes = [IsOwnerOrReadOnly]
     serializer_class = InstructorRatingSerializer
     queryset = InstructorRating.objects.all()

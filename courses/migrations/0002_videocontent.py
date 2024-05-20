@@ -33,7 +33,9 @@ class Migration(migrations.Migration):
                         blank=True,
                         storage=cloudinary_storage.storage.VideoMediaCloudinaryStorage(),
                         upload_to="videos/",
-                        validators=[cloudinary_storage.validators.validate_video],
+                        validators=[
+                            cloudinary_storage.validators.validate_video
+                        ],
                     ),
                 ),
                 ("duration", models.IntegerField()),
@@ -43,7 +45,8 @@ class Migration(migrations.Migration):
                 (
                     "course_content",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="courses.course"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="courses.course",
                     ),
                 ),
             ],

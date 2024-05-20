@@ -40,4 +40,3 @@ class HasInstructorProfile(permissions.BasePermission):
             return True
         except Instructor.DoesNotExist:
             return False
-

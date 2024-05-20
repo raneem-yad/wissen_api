@@ -11,20 +11,26 @@ class Instructor(models.Model):
     A model representing a instructor profile associated with a user.
 
     """
+
     owner = models.OneToOneField(User, on_delete=models.CASCADE)
     job_title = models.CharField(max_length=100, null=True, blank=True)
-    full_name = models.CharField(max_length=200, null=False, blank=False, default="test case")
+    full_name = models.CharField(
+        max_length=200, null=False, blank=False, default="test case"
+    )
     bio = models.TextField(null=True, blank=True)
-    profile_id = models.CharField(max_length=255, unique=True, editable=False, default=uuid.uuid4)
+    profile_id = models.CharField(
+        max_length=255, unique=True, editable=False, default=uuid.uuid4
+    )
     image = ResizedImageField(
         size=[300, None],
         quality=70,
         upload_to="profiles/",
-        null=True, blank=True
+        null=True,
+        blank=True,
     )
     website_link = models.URLField(null=True, blank=True)
     linkedin_link = models.URLField(null=True, blank=True)
-    expertise = models.ManyToManyField(Expertise, related_name='instructors')
+    expertise = models.ManyToManyField(Expertise, related_name="instructors")
     created_date = models.DateField(auto_now_add=True)
     updated_date = models.DateField(auto_now=True)
 
@@ -34,7 +40,7 @@ class Instructor(models.Model):
         super().save(*args, **kwargs)
 
     class Meta:
-        ordering = ['-created_date']
+        ordering = ["-created_date"]
 
     def __str__(self):
         return f"{self.owner}'s instructor profile"

@@ -14,7 +14,9 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RenameField(
-            model_name="instructorrating", old_name="instructor", new_name="teacher",
+            model_name="instructorrating",
+            old_name="instructor",
+            new_name="teacher",
         ),
         migrations.AlterUniqueTogether(
             name="instructorrating", unique_together={("teacher", "user")},

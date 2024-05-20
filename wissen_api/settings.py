@@ -25,37 +25,37 @@ if os.path.exists("env.py"):
 
 # auth-token configurations
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [(
-        'rest_framework.authentication.SessionAuthentication'
-        if 'DEVELOPMENT' in os.environ
-        else 'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
-    )],
-    'DEFAULT_PAGINATION_CLASS':
-        'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 6,
-    'DATETIME_FORMAT': '%d %b %Y',
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        (
+            "rest_framework.authentication.SessionAuthentication"
+            if "DEVELOPMENT" in os.environ
+            else "dj_rest_auth.jwt_auth.JWTCookieAuthentication"
+        )
+    ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 6,
+    "DATETIME_FORMAT": "%d %b %Y",
 }
-if 'DEVELOPMENT' not in os.environ:
-    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = [
-        'rest_framework.renderers.JSONRenderer',
+if "DEVELOPMENT" not in os.environ:
+    REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = [
+        "rest_framework.renderers.JSONRenderer",
     ]
 REST_USE_JWT = True
 JWT_AUTH_SECURE = True
-JWT_AUTH_COOKIE = 'my-app-auth'
-JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
-JWT_AUTH_SAMESITE = 'None'
+JWT_AUTH_COOKIE = "my-app-auth"
+JWT_AUTH_REFRESH_COOKIE = "my-refresh-token"
+JWT_AUTH_SAMESITE = "None"
 
 REST_AUTH_SERIALIZERS = {
-    'USER_DETAILS_SERIALIZER': 'wissen_api.serializers.CustomUserDetailsSerializer',
-
+    "USER_DETAILS_SERIALIZER": "wissen_api.serializers.CustomUserDetailsSerializer",
 }
 
 REST_AUTH = {
-    'USER_DETAILS_SERIALIZER': 'wissen_api.serializers.CustomUserDetailsSerializer',
+    "USER_DETAILS_SERIALIZER": "wissen_api.serializers.CustomUserDetailsSerializer",
 }
 
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
+    "http://localhost:3000",
 ]
 # REST_AUTH_REGISTER_SERIALIZERS = {
 #     'REGISTER_SERIALIZER': 'wissen_api.serializers.CustomRegisterSerializer',
@@ -72,41 +72,40 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'cloudinary_storage',
-    'cloudinary',
-
-    'rest_framework',
-    'django_filters',
-    'rest_framework.authtoken',
-    'dj_rest_auth',
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'dj_rest_auth.registration',
-    'drf_yasg',
-    'djrichtextfield',
-    'corsheaders',
-
-    #custome Apps
-    'courses',
-    'instructor',
-    'category',
-    'comment',
-    'rating',
-    'tags',
-    'expertise',
-    'instructor_rating',
-    'learner',
-
+    "cloudinary_storage",
+    "cloudinary",
+    "rest_framework",
+    "django_filters",
+    "rest_framework.authtoken",
+    "dj_rest_auth",
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "dj_rest_auth.registration",
+    "drf_yasg",
+    "djrichtextfield",
+    "corsheaders",
+    # custome Apps
+    "courses",
+    "instructor",
+    "category",
+    "comment",
+    "rating",
+    "tags",
+    "expertise",
+    "instructor_rating",
+    "learner",
 ]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
-DEBUG = 'DEVELOPMENT' in os.environ
+DEBUG = "DEVELOPMENT" in os.environ
 ALLOWED_HOSTS = [
-    os.environ.get('ALLOWED_HOST'),
-    'localhost', '127.0.0.1',".herokuapp.com"
+    os.environ.get("ALLOWED_HOST"),
+    "localhost",
+    "127.0.0.1",
+    ".herokuapp.com",
 ]
 
 
@@ -114,7 +113,7 @@ ALLOWED_HOSTS = [
 
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.middleware.common.CommonMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -125,7 +124,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # 'allauth.account.middleware.AccountMiddleware',
-
 ]
 
 ROOT_URLCONF = "wissen_api.urls"
@@ -160,15 +158,18 @@ SITE_ID = 1
 # }
 DATABASES = {"default": dj_database_url.parse(os.environ.get("DATABASE_URL"))}
 
-CSRF_TRUSTED_ORIGINS = ["https://*.herokuapp.com", "https://*.gitpod.io", "http://192.168.0.108/:3000" ,"http://127.0.0.1:8000/"]
-if 'CLIENT_ORIGIN' in os.environ:
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.herokuapp.com",
+    "https://*.gitpod.io",
+    "http://192.168.0.108/:3000",
+    "http://127.0.0.1:8000/",
+]
+if "CLIENT_ORIGIN" in os.environ:
+    CORS_ALLOWED_ORIGINS = [os.environ.get("CLIENT_ORIGIN")]
+if "CLIENT_ORIGIN_DEV" in os.environ:
     CORS_ALLOWED_ORIGINS = [
-        os.environ.get('CLIENT_ORIGIN')
-    ]
-if 'CLIENT_ORIGIN_DEV' in os.environ:
-    CORS_ALLOWED_ORIGINS = [
-        os.environ.get('CLIENT_ORIGIN_DEV'),
-        os.environ.get('CLIENT_ORIGIN')
+        os.environ.get("CLIENT_ORIGIN_DEV"),
+        os.environ.get("CLIENT_ORIGIN"),
     ]
 
 # if 'CLIENT_ORIGIN' in os.environ:
@@ -193,9 +194,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
     {
         "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
@@ -246,7 +245,7 @@ DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 CLOUDINARY_URL = os.environ.get("CLOUDINARY_URL")
 
 
-#rich text
+# rich text
 DJRICHTEXTFIELD_CONFIG = {
     "js": ["//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"],
     "init_template": "djrichtextfield/init/ckeditor.js",
@@ -263,10 +262,4 @@ DJRICHTEXTFIELD_CONFIG = {
 
 
 # swagger settings
-SWAGGER_SETTINGS = {
-    'SECURITY_DEFINITIONS': {
-        'Basic': {
-            'type': 'basic'
-        }
-    }
-}
+SWAGGER_SETTINGS = {"SECURITY_DEFINITIONS": {"Basic": {"type": "basic"}}}

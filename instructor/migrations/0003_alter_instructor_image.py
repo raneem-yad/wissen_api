@@ -7,7 +7,10 @@ import django_resized.forms
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("instructor", "0002_alter_instructor_bio_alter_instructor_image_and_more"),
+        (
+            "instructor",
+            "0002_alter_instructor_bio_alter_instructor_image_and_more",
+        ),
     ]
 
     operations = [

@@ -169,9 +169,17 @@ in that way we can execute any other API Considring if the user has the permissi
 [deployed link](https://wissen-api-61cc6e37e2b8.herokuapp.com/)
 ![swagger](./readme/swagger.png)
 
+## Security
+
+A permissions class was added called IsOwnerOrReadOnly to ensure only users who create the content are able to edit or delete it.
+
+Another permissions class was added called HasInstructorProfile to ensure only Instructors can create a course , edit or delete it.
+
 
 ## Testing 
+The APIs were tested locally during development but the core testing was done as part of the front end repos and testing to the real APIs manually via form inputs and page loads.
 
+The results can be found in [Wissen](https://github.com/raneem-yad/wissen)
 
 # **Deployment**
 

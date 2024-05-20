@@ -23,15 +23,19 @@ class Learner(models.Model):
        Meta:
        - ordering: Orders the learner profiles by creation date in descending order.
        """
+
     owner = models.OneToOneField(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=200, null=False, blank=False)
     bio = models.TextField(null=True, blank=True)
-    profile_id = models.CharField(max_length=255,unique=True, editable=False, default=uuid.uuid4)
+    profile_id = models.CharField(
+        max_length=255, unique=True, editable=False, default=uuid.uuid4
+    )
     image = ResizedImageField(
         size=[300, None],
         quality=70,
         upload_to="profiles/",
-        null=True, blank=True
+        null=True,
+        blank=True,
     )
     created_date = models.DateField(auto_now_add=True)
     updated_date = models.DateField(auto_now=True)
@@ -42,7 +46,7 @@ class Learner(models.Model):
         super().save(*args, **kwargs)
 
     class Meta:
-        ordering = ['-created_date']
+        ordering = ["-created_date"]
 
     def __str__(self):
         return f"{self.owner}'s learner profile"

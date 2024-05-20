@@ -22,7 +22,7 @@ class InstructorsByExpertiseList(generics.ListAPIView):
     serializer_class = InstructorSerializer
 
     def get_queryset(self):
-        expertise_id = self.kwargs.get('pk')
+        expertise_id = self.kwargs.get("pk")
         if expertise_id is not None:
             try:
                 tag = Expertise.objects.get(id=expertise_id)

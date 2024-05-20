@@ -15,33 +15,36 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
     profile_type = serializers.SerializerMethodField()
 
     def get_profile_image(self, user):
-        if hasattr(user, 'learner') and user.learner.image:
+        if hasattr(user, "learner") and user.learner.image:
             return str(user.learner.image.url)
-        elif hasattr(user, 'instructor') and user.instructor.image:
+        elif hasattr(user, "instructor") and user.instructor.image:
             return str(user.instructor.image.url)
         else:
             return None
 
     def get_profile_id(self, user):
-        if hasattr(user, 'learner'):
+        if hasattr(user, "learner"):
             return user.learner.profile_id
-        elif hasattr(user, 'instructor'):
+        elif hasattr(user, "instructor"):
             return user.instructor.profile_id
         else:
             return None
 
     def get_profile_type(self, user):
-        if hasattr(user, 'learner'):
-            return 'learner'
-        elif hasattr(user, 'instructor'):
-            return 'instructor'
+        if hasattr(user, "learner"):
+            return "learner"
+        elif hasattr(user, "instructor"):
+            return "instructor"
         else:
             return None
 
     class Meta(UserDetailsSerializer.Meta):
         fields = UserDetailsSerializer.Meta.fields + (
-            'profile_id', 'profile_image', 'profile_type'
+            "profile_id",
+            "profile_image",
+            "profile_type",
         )
+
 
 class CustomRegisterSerializer(RegisterSerializer):
     is_instructor = serializers.BooleanField()
@@ -52,21 +55,25 @@ class CustomRegisterSerializer(RegisterSerializer):
         attrs = super().validate(attrs)
 
         # Check if 'is_instructor' is provided and is a boolean
-        if 'is_instructor' not in attrs:
-            raise serializers.ValidationError("is_instructor field is required.")
-        if not isinstance(attrs['is_instructor'], bool):
-            raise serializers.ValidationError("is_instructor must be a boolean.")
+        if "is_instructor" not in attrs:
+            raise serializers.ValidationError(
+                "is_instructor field is required."
+            )
+        if not isinstance(attrs["is_instructor"], bool):
+            raise serializers.ValidationError(
+                "is_instructor must be a boolean."
+            )
 
         # Check if 'full_name' is provided and not empty
-        if 'full_name' not in attrs or not attrs['full_name'].strip():
+        if "full_name" not in attrs or not attrs["full_name"].strip():
             raise serializers.ValidationError("full_name field is required.")
 
         return attrs
 
     def custom_signup(self, request, user):
         print("custom_signup method called.")
-        is_instructor = self.validated_data.get('is_instructor', False)
-        full_name = self.validated_data.get('full_name', "Not found")
+        is_instructor = self.validated_data.get("is_instructor", False)
+        full_name = self.validated_data.get("full_name", "Not found")
         print(f"is_instructor: {is_instructor}, full_name: {full_name}")
 
         if is_instructor:
@@ -82,13 +89,17 @@ class ProfileSerializer(serializers.Serializer):
     profile = serializers.SerializerMethodField()
 
     def get_profile(self, obj):
-        request = self.context.get('request')
-        if obj['role'] == 'learner':
-            learner_instance = obj['profile']
-            learner_serializer = LearnerSerializer(learner_instance, context={'request': request})
+        request = self.context.get("request")
+        if obj["role"] == "learner":
+            learner_instance = obj["profile"]
+            learner_serializer = LearnerSerializer(
+                learner_instance, context={"request": request}
+            )
             return learner_serializer.data
-        elif obj['role'] == 'instructor':
-            instructor_instance = obj['profile']
-            instructor_serializer = InstructorSerializer(instructor_instance, context={'request': request})
+        elif obj["role"] == "instructor":
+            instructor_instance = obj["profile"]
+            instructor_serializer = InstructorSerializer(
+                instructor_instance, context={"request": request}
+            )
             return instructor_serializer.data
         return None

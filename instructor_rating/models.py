@@ -6,8 +6,12 @@ from instructor.models import Instructor
 
 
 class InstructorRating(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="instructor_rater")
-    teacher = models.ForeignKey(Instructor, on_delete=models.CASCADE, related_name="instructor_ratings")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="instructor_rater"
+    )
+    teacher = models.ForeignKey(
+        Instructor, on_delete=models.CASCADE, related_name="instructor_ratings"
+    )
     rating = models.IntegerField(choices=[(i, str(i)) for i in range(1, 6)])
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -15,12 +19,12 @@ class InstructorRating(models.Model):
         return f"{self.teacher} - {self.user}: {self.rating} stars"
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ["-created_at"]
         unique_together = ("teacher", "user")
 
     @classmethod
     def get_average_rating(cls, instructor_id):
-        average_rating = cls.objects.filter(instructor_id=instructor_id).aggregate(
-            Avg("rating")
-        )["rating__avg"]
+        average_rating = cls.objects.filter(
+            instructor_id=instructor_id
+        ).aggregate(Avg("rating"))["rating__avg"]
         return average_rating or 0

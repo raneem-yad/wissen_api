@@ -14,6 +14,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="learner",
             name="enrolled_courses",
-            field=models.ManyToManyField(related_name="learners", to="courses.course"),
+            field=models.ManyToManyField(
+                related_name="learners", to="courses.course"
+            ),
         ),
     ]
