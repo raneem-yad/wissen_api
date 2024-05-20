@@ -21,5 +21,5 @@ class RatingSerializer(serializers.ModelSerializer):
             return super().create(validated_data)
         except IntegrityError:
             raise serializers.ValidationError(
-                {"detail": "you Can't rating the course twice"}
+                {"detail": "you Can't rate the course twice"}
             )
