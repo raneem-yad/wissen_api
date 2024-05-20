@@ -25,6 +25,7 @@ class Instructor(models.Model):
         size=[300, None],
         quality=70,
         upload_to="profiles/",
+        default="profiles/default_profile_iryl59",
         null=True,
         blank=True,
     )
