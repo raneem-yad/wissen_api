@@ -181,6 +181,12 @@ The APIs were tested locally during development but the core testing was done as
 
 The results can be found in [Wissen](https://github.com/raneem-yad/wissen)
 
+**Validator Results**
+
+All folders were run through black. All issues were about  lines too long and were resolved.
+
+![overall](/readme/validator.png)
+
 # **Deployment**
 
 Here is the [add link here]().
