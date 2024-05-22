@@ -1,4 +1,4 @@
-from django.db.models import Avg
+from django.db.models import Avg, Count
 from django.http import Http404
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status, generics
@@ -72,8 +72,9 @@ class TopInstructorsView(APIView):
     def get(self, request):
         # Get the top 6 instructors based on average rating
         top_instructors = Instructor.objects.annotate(
-            avg_rating=Avg("instructor_ratings__rating")
-        ).order_by("-avg_rating")[:6]
+            avg_rating=Avg("instructor_ratings__rating"),
+            rating_count=Count("instructor_ratings")
+        ).filter(rating_count__gt=0).order_by("-avg_rating")[:6]
 
         # Serialize the queryset
         serializer = InstructorSerializer(
