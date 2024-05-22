@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.db.models import Avg
+from django.db.models import Avg, Count
 from django.http import Http404, QueryDict
 from django.utils.datastructures import MultiValueDict
 from drf_yasg.utils import swagger_auto_schema
@@ -264,17 +264,18 @@ class CourseVideoDetailView(APIView):
 class TopThreeCoursesView(APIView):
     def get(self, request):
         # Query the Rating model to get the top-rated courses
-        top_rated_course_ids = (
-            Rating.objects.values("course")
-            .annotate(avg_rating=Avg("rating"))
+        top_rated_courses = (
+            Course.objects.annotate(
+                avg_rating=Avg("ratings__rating"),
+                rating_count=Count("ratings")
+            )
+            .filter(rating_count__gt=0)
             .order_by("-avg_rating")[:3]
-            .values_list("course", flat=True)
         )
 
-        top_rated_courses = Course.objects.filter(id__in=top_rated_course_ids)
-
-        serialized_courses = CourseSerializer(
+        serializer = CourseSerializer(
             top_rated_courses, many=True, context={"request": request}
-        ).data
+        )
+        return Response(serializer.data)
 
-        return Response(serialized_courses)
+
