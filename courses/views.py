@@ -50,20 +50,17 @@ class CourseList(ListAPIView, CreateAPIView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        # ?sort_by=name&ascending=true
-        # ?sort_by=created_at&ascending=false
+
         sort_by = self.request.query_params.get("sort_by")
         ascending = (
-            self.request.query_params.get("ascending", "true").lower() == "true"
+                self.request.query_params.get("ascending", "true").lower() == "true"
         )
 
-        # Define the default ordering
-        ordering = "-posted_date"  # Default to descending order of date created
+        ordering = "-posted_date"
 
         if sort_by == "name":
             ordering = "course_name" if ascending else "-course_name"
-
-        if sort_by == "posted_date":
+        elif sort_by == "posted_date" or sort_by == "created_at":
             ordering = "posted_date" if ascending else "-posted_date"
 
         return queryset.order_by(ordering)
@@ -277,5 +274,3 @@ class TopThreeCoursesView(APIView):
             top_rated_courses, many=True, context={"request": request}
         )
         return Response(serializer.data)
-
-
