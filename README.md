@@ -179,7 +179,7 @@ Another permissions class was added called HasInstructorProfile to ensure only I
 ## Testing 
 The APIs were tested locally during development but the core testing was done as part of the front end repos and testing to the real APIs manually via form inputs and page loads.
 
-The results can be found in [Wissen](https://github.com/raneem-yad/wissen)
+The results can be found in [Wissen](https://github.com/raneem-yad/wissen/blob/main/TESTING.md)
 
 **Validator Results**
 
@@ -189,7 +189,7 @@ All folders were run through black. All issues were about  lines too long and we
 
 # **Deployment**
 
-Here is the [add link here]().
+Here is the [deployment version](https://wissen-api-61cc6e37e2b8.herokuapp.com/).
 
 ## **Create Repository**
 
